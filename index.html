@@ -8,7 +8,6 @@
     <meta name="apple-mobile-web-app-title" content="经济学人">
     <meta name="theme-color" content="#e3120b">
     <title>经济学人 - The Economist</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -225,10 +224,6 @@
             color: var(--text-secondary);
         }
         
-        .download-section {
-            margin-top: 20px;
-        }
-        
         .download-title {
             font-size: 16px;
             font-weight: 600;
@@ -259,11 +254,6 @@
         .download-btn.primary {
             background: var(--primary);
             color: white;
-        }
-        
-        .download-btn.secondary {
-            background: #e8f4fd;
-            color: #0066cc;
         }
         
         .download-btn:active {
@@ -299,23 +289,6 @@
             text-overflow: ellipsis;
         }
         
-        .reader-actions {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .reader-action {
-            width: 36px;
-            height: 36px;
-            background: var(--card);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            cursor: pointer;
-        }
-        
         .info-card {
             background: #e8f4fd;
             border-radius: 12px;
@@ -336,166 +309,6 @@
             line-height: 1.5;
         }
         
-        /* PDF 阅读器样式 */
-        .pdf-reader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: #1a1a1a;
-            z-index: 2000;
-            display: none;
-            flex-direction: column;
-        }
-        
-        .pdf-reader.active {
-            display: flex;
-        }
-        
-        .pdf-header {
-            background: #2a2a2a;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: white;
-        }
-        
-        .pdf-title {
-            font-size: 16px;
-            font-weight: 600;
-            flex: 1;
-            text-align: center;
-            margin: 0 16px;
-        }
-        
-        .pdf-close, .pdf-translate-toggle {
-            width: 36px;
-            height: 36px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 18px;
-        }
-        
-        .pdf-translate-toggle.active {
-            background: var(--primary);
-        }
-        
-        .pdf-container {
-            flex: 1;
-            overflow: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .pdf-page {
-            background: white;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-        
-        .pdf-loading {
-            color: white;
-            text-align: center;
-            padding: 40px;
-        }
-        
-        .pdf-progress {
-            width: 200px;
-            height: 4px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 2px;
-            margin: 20px auto;
-            overflow: hidden;
-        }
-        
-        .pdf-progress-bar {
-            height: 100%;
-            background: var(--primary);
-            border-radius: 2px;
-            width: 0%;
-            transition: width 0.3s;
-        }
-        
-        /* 翻译面板 */
-        .translate-panel {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            border-radius: 20px 20px 0 0;
-            padding: 20px;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-            z-index: 2001;
-            max-height: 50vh;
-            overflow-y: auto;
-        }
-        
-        .translate-panel.active {
-            transform: translateY(0);
-        }
-        
-        .translate-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .translate-title {
-            font-size: 16px;
-            font-weight: 600;
-        }
-        
-        .translate-close {
-            font-size: 20px;
-            cursor: pointer;
-            color: var(--text-secondary);
-        }
-        
-        .translate-source {
-            background: #f5f5f7;
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 12px;
-            font-size: 15px;
-            line-height: 1.5;
-        }
-        
-        .translate-result {
-            background: #e8f4fd;
-            border-radius: 12px;
-            padding: 12px;
-            font-size: 15px;
-            line-height: 1.5;
-            color: #0066cc;
-        }
-        
-        .translate-loading {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-secondary);
-        }
-        
-        .translate-hint {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-        
         .hidden { display: none !important; }
     </style>
 </head>
@@ -514,7 +327,7 @@
             <div class="issue-date" id="latest-date">2026年4月4日</div>
             <button class="btn-primary">
                 <span>📖</span>
-                <span>查看详情</span>
+                <span>查看下载</span>
             </button>
         </div>
         
@@ -545,29 +358,25 @@
         <div class="info-card">
             <div class="info-title">💡 阅读提示</div>
             <div class="info-text">
-                • 在线阅读：直接在浏览器中阅读PDF，支持划词翻译<br>
-                • 下载阅读：下载后用专业阅读器打开，体验更好<br>
-                • 翻译功能：阅读时选中文字即可翻译
+                点击下方的下载按钮获取期刊文件，建议使用以下App打开：<br>
+                • PDF：系统自带图书App或Adobe Acrobat<br>
+                • EPUB：Apple Books、KyBook<br>
+                • MOBI：Kindle App
             </div>
         </div>
         
         <div class="card">
-            <div class="download-title">阅读方式</div>
-            <div class="download-buttons">
-                <button class="download-btn secondary" onclick="openPDFReader()">
-                    📖 在线阅读
-                </button>
-                <button class="download-btn primary" onclick="showDownloadOptions()">
-                    ⬇️ 下载
-                </button>
+            <div class="download-title">选择格式下载</div>
+            <div class="download-buttons" id="download-buttons">
+                <!-- 动态生成下载按钮 -->
             </div>
         </div>
         
-        <div class="card hidden" id="download-options">
-            <div class="download-title">选择格式下载</div>
-            <div class="download-buttons" id="download-buttons">
-                <!-- 动态生成 -->
-            </div>
+        <div class="card">
+            <div class="download-title">在线阅读</div>
+            <a href="#" class="download-btn primary" id="github-link" target="_blank" style="display: block; text-align: center; margin-top: 10px;">
+                在 GitHub 上查看
+            </a>
         </div>
     </div>
     
@@ -591,8 +400,7 @@
         <div class="card">
             <div style="font-size: 14px; line-height: 1.8; color: var(--text-secondary);">
                 <p style="margin-bottom: 12px;">本应用数据来源于开源项目 awesome-english-ebooks，仅供学习交流使用。</p>
-                <p style="margin-bottom: 12px;">在线阅读使用 Mozilla PDF.js 渲染。</p>
-                <p>翻译功能使用 LibreTranslate API。</p>
+                <p>期刊每周五晚更新，支持 PDF、EPUB、MOBI 三种格式下载。</p>
             </div>
         </div>
     </div>
@@ -608,41 +416,8 @@
             <div class="tab-label">我的</div>
         </div>
     </div>
-    
-    <!-- PDF 阅读器 -->
-    <div class="pdf-reader" id="pdf-reader">
-        <div class="pdf-header">
-            <div class="pdf-close" onclick="closePDFReader()">✕</div>
-            <div class="pdf-title" id="pdf-title">The Economist</div>
-            <div class="pdf-translate-toggle" id="translate-toggle" onclick="toggleTranslate()">
-                🌐
-            </div>
-        </div>
-        <div class="pdf-container" id="pdf-container">
-            <div class="pdf-loading">
-                <div>正在加载 PDF...</div>
-                <div class="pdf-progress">
-                    <div class="pdf-progress-bar" id="pdf-progress-bar"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- 翻译面板 -->
-    <div class="translate-panel" id="translate-panel">
-        <div class="translate-header">
-            <div class="translate-title">🌐 翻译</div>
-            <div class="translate-close" onclick="closeTranslate()">✕</div>
-        </div>
-        <div class="translate-content" id="translate-content">
-            <div class="translate-hint">选中 PDF 中的文字即可翻译</div>
-        </div>
-    </div>
 
     <script>
-        // 配置 PDF.js
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        
         // 期刊数据
         const issues = [
             { 
@@ -651,7 +426,8 @@
                 dateShort: '2026.04.04',
                 pdf: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.04.04/TheEconomist.2026.04.04.pdf',
                 epub: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.04.04/TheEconomist.2026.04.04.epub',
-                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.04.04/TheEconomist.2026.04.04.mobi'
+                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.04.04/TheEconomist.2026.04.04.mobi',
+                github: 'https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/te_2026.04.04'
             },
             { 
                 id: 'te_2026.03.28', 
@@ -659,7 +435,8 @@
                 dateShort: '2026.03.28',
                 pdf: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.28/TheEconomist.2026.03.28.pdf',
                 epub: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.28/TheEconomist.2026.03.28.epub',
-                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.28/TheEconomist.2026.03.28.mobi'
+                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.28/TheEconomist.2026.03.28.mobi',
+                github: 'https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/te_2026.03.28'
             },
             { 
                 id: 'te_2026.03.21', 
@@ -667,7 +444,8 @@
                 dateShort: '2026.03.21',
                 pdf: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.21/TheEconomist.2026.03.21.pdf',
                 epub: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.21/TheEconomist.2026.03.21.epub',
-                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.21/TheEconomist.2026.03.21.mobi'
+                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.21/TheEconomist.2026.03.21.mobi',
+                github: 'https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/te_2026.03.21'
             },
             { 
                 id: 'te_2026.03.14', 
@@ -675,7 +453,8 @@
                 dateShort: '2026.03.14',
                 pdf: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.14/TheEconomist.2026.03.14.pdf',
                 epub: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.14/TheEconomist.2026.03.14.epub',
-                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.14/TheEconomist.2026.03.14.mobi'
+                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.14/TheEconomist.2026.03.14.mobi',
+                github: 'https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/te_2026.03.14'
             },
             { 
                 id: 'te_2026.03.07', 
@@ -683,14 +462,12 @@
                 dateShort: '2026.03.07',
                 pdf: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.07/TheEconomist.2026.03.07.pdf',
                 epub: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.07/TheEconomist.2026.03.07.epub',
-                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.07/TheEconomist.2026.03.07.mobi'
+                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.07/TheEconomist.2026.03.07.mobi',
+                github: 'https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/te_2026.03.07'
             },
         ];
         
         let currentIssue = null;
-        let currentPDF = null;
-        let translateEnabled = false;
-        let selectedText = '';
         
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
@@ -742,9 +519,11 @@
             currentIssue = issues.find(i => i.id === issueId);
             if (!currentIssue) return;
             
+            // 更新期刊详情页
             document.getElementById('issue-detail-title').textContent = currentIssue.dateShort;
             document.getElementById('issue-title').textContent = 'The Economist';
             document.getElementById('issue-date').textContent = currentIssue.dateShort;
+            document.getElementById('github-link').href = currentIssue.github;
             
             // 生成下载按钮
             const buttonsHtml = `
@@ -754,203 +533,8 @@
             `;
             document.getElementById('download-buttons').innerHTML = buttonsHtml;
             
-            // 隐藏下载选项
-            document.getElementById('download-options').classList.add('hidden');
-            
+            // 显示期刊详情页
             showPage('issue');
-        }
-        
-        // 显示下载选项
-        function showDownloadOptions() {
-            document.getElementById('download-options').classList.remove('hidden');
-        }
-        
-        // 打开 PDF 阅读器
-        async function openPDFReader() {
-            if (!currentIssue) return;
-            
-            document.getElementById('pdf-reader').classList.add('active');
-            document.getElementById('pdf-title').textContent = `The Economist ${currentIssue.dateShort}`;
-            document.body.style.overflow = 'hidden';
-            
-            try {
-                await loadPDF(currentIssue.pdf);
-            } catch (error) {
-                console.error('PDF 加载失败:', error);
-                document.getElementById('pdf-container').innerHTML = `
-                    <div class="pdf-loading">
-                        <div>PDF 加载失败</div>
-                        <div style="font-size: 14px; margin-top: 10px; opacity: 0.7;">
-                            请尝试下载后阅读，或使用其他浏览器
-                        </div>
-                    </div>
-                `;
-            }
-        }
-        
-        // 关闭 PDF 阅读器
-        function closePDFReader() {
-            document.getElementById('pdf-reader').classList.remove('active');
-            document.body.style.overflow = '';
-            closeTranslate();
-            
-            // 清理
-            document.getElementById('pdf-container').innerHTML = `
-                <div class="pdf-loading">
-                    <div>正在加载 PDF...</div>
-                    <div class="pdf-progress">
-                        <div class="pdf-progress-bar" id="pdf-progress-bar"></div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        // 加载 PDF
-        async function loadPDF(url) {
-            const loadingTask = pdfjsLib.getDocument(url);
-            currentPDF = await loadingTask.promise;
-            
-            const container = document.getElementById('pdf-container');
-            container.innerHTML = '';
-            
-            const totalPages = currentPDF.numPages;
-            
-            // 加载前 5 页（避免内存占用过大）
-            const pagesToLoad = Math.min(5, totalPages);
-            
-            for (let i = 1; i <= pagesToLoad; i++) {
-                const page = await currentPDF.getPage(i);
-                const viewport = page.getViewport({ scale: 1.5 });
-                
-                const canvas = document.createElement('canvas');
-                canvas.className = 'pdf-page';
-                const context = canvas.getContext('2d');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-                
-                const renderContext = {
-                    canvasContext: context,
-                    viewport: viewport
-                };
-                
-                await page.render(renderContext).promise;
-                container.appendChild(canvas);
-                
-                // 更新进度
-                const progress = (i / pagesToLoad) * 100;
-                document.getElementById('pdf-progress-bar').style.width = progress + '%';
-            }
-            
-            // 添加文本选择事件监听
-            if (translateEnabled) {
-                enableTextSelection();
-            }
-        }
-        
-        // 切换翻译功能
-        function toggleTranslate() {
-            translateEnabled = !translateEnabled;
-            const toggle = document.getElementById('translate-toggle');
-            toggle.classList.toggle('active', translateEnabled);
-            
-            if (translateEnabled) {
-                enableTextSelection();
-                showTranslateHint();
-            } else {
-                closeTranslate();
-            }
-        }
-        
-        // 启用文本选择
-        function enableTextSelection() {
-            const container = document.getElementById('pdf-container');
-            container.addEventListener('mouseup', handleTextSelection);
-            container.addEventListener('touchend', handleTextSelection);
-        }
-        
-        // 处理文本选择
-        async function handleTextSelection() {
-            if (!translateEnabled) return;
-            
-            const selection = window.getSelection();
-            const text = selection.toString().trim();
-            
-            if (text && text !== selectedText && text.length > 0 && text.length < 500) {
-                selectedText = text;
-                await translateText(text);
-            }
-        }
-        
-        // 翻译文本
-        async function translateText(text) {
-            const panel = document.getElementById('translate-panel');
-            const content = document.getElementById('translate-content');
-            
-            panel.classList.add('active');
-            content.innerHTML = '<div class="translate-loading">正在翻译...</div>';
-            
-            try {
-                // 使用 LibreTranslate API（免费开源翻译服务）
-                const response = await fetch('https://libretranslate.de/translate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        q: text,
-                        source: 'en',
-                        target: 'zh',
-                        format: 'text'
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error('翻译服务暂时不可用');
-                }
-                
-                const data = await response.json();
-                
-                content.innerHTML = `
-                    <div class="translate-source">${escapeHtml(text)}</div>
-                    <div class="translate-result">${escapeHtml(data.translatedText)}</div>
-                `;
-            } catch (error) {
-                // 备用：使用 Google Translate 链接
-                const encodedText = encodeURIComponent(text);
-                content.innerHTML = `
-                    <div class="translate-source">${escapeHtml(text)}</div>
-                    <div style="padding: 12px; text-align: center;">
-                        <p style="margin-bottom: 12px; color: var(--text-secondary);">
-                            自动翻译服务暂时不可用
-                        </p>
-                        <a href="https://translate.google.com/?sl=en&tl=zh&text=${encodedText}&op=translate" 
-                           target="_blank" 
-                           class="download-btn primary" 
-                           style="display: inline-block; text-decoration: none;">
-                            在 Google 翻译中打开
-                        </a>
-                    </div>
-                `;
-            }
-        }
-        
-        // 关闭翻译面板
-        function closeTranslate() {
-            document.getElementById('translate-panel').classList.remove('active');
-            selectedText = '';
-        }
-        
-        // 显示翻译提示
-        function showTranslateHint() {
-            const content = document.getElementById('translate-content');
-            content.innerHTML = '<div class="translate-hint">选中 PDF 中的文字即可翻译</div>';
-        }
-        
-        // HTML 转义
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
         }
     </script>
 </body>
