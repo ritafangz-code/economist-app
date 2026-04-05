@@ -418,54 +418,94 @@
     </div>
 
     <script>
-        // 期刊数据
-        const issues = [
-            { 
-                id: 'te_2026.04.04', 
-                date: '2026年4月4日', 
-                dateShort: '2026.04.04',
-                pdf: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.04.04/TheEconomist.2026.04.04.pdf',
-                epub: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.04.04/TheEconomist.2026.04.04.epub',
-                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.04.04/TheEconomist.2026.04.04.mobi',
-                github: 'https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/te_2026.04.04'
-            },
-            { 
-                id: 'te_2026.03.28', 
-                date: '2026年3月28日', 
-                dateShort: '2026.03.28',
-                pdf: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.28/TheEconomist.2026.03.28.pdf',
-                epub: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.28/TheEconomist.2026.03.28.epub',
-                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.28/TheEconomist.2026.03.28.mobi',
-                github: 'https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/te_2026.03.28'
-            },
-            { 
-                id: 'te_2026.03.21', 
-                date: '2026年3月21日', 
-                dateShort: '2026.03.21',
-                pdf: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.21/TheEconomist.2026.03.21.pdf',
-                epub: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.21/TheEconomist.2026.03.21.epub',
-                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.21/TheEconomist.2026.03.21.mobi',
-                github: 'https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/te_2026.03.21'
-            },
-            { 
-                id: 'te_2026.03.14', 
-                date: '2026年3月14日', 
-                dateShort: '2026.03.14',
-                pdf: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.14/TheEconomist.2026.03.14.pdf',
-                epub: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.14/TheEconomist.2026.03.14.epub',
-                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.14/TheEconomist.2026.03.14.mobi',
-                github: 'https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/te_2026.03.14'
-            },
-            { 
-                id: 'te_2026.03.07', 
-                date: '2026年3月7日', 
-                dateShort: '2026.03.07',
-                pdf: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.07/TheEconomist.2026.03.07.pdf',
-                epub: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.07/TheEconomist.2026.03.07.epub',
-                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.07/TheEconomist.2026.03.07.mobi',
-                github: 'https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/te_2026.03.07'
-            },
+        // 期刊数据 - 2026年
+        const issues2026 = [
+            { id: 'te_2026.04.04', date: '2026年4月4日', dateShort: '2026.04.04' },
+            { id: 'te_2026.03.28', date: '2026年3月28日', dateShort: '2026.03.28' },
+            { id: 'te_2026.03.21', date: '2026年3月21日', dateShort: '2026.03.21' },
+            { id: 'te_2026.03.14', date: '2026年3月14日', dateShort: '2026.03.14' },
+            { id: 'te_2026.03.07', date: '2026年3月7日', dateShort: '2026.03.07' },
+            { id: 'te_2026.02.28', date: '2026年2月28日', dateShort: '2026.02.28' },
+            { id: 'te_2026.02.21', date: '2026年2月21日', dateShort: '2026.02.21' },
+            { id: 'te_2026.02.14', date: '2026年2月14日', dateShort: '2026.02.14' },
+            { id: 'te_2026.02.07', date: '2026年2月7日', dateShort: '2026.02.07' },
+            { id: 'te_2026.01.31', date: '2026年1月31日', dateShort: '2026.01.31' },
+            { id: 'te_2026.01.24', date: '2026年1月24日', dateShort: '2026.01.24' },
+            { id: 'te_2026.01.17', date: '2026年1月17日', dateShort: '2026.01.17' },
+            { id: 'te_2026.01.10', date: '2026年1月10日', dateShort: '2026.01.10' },
+            { id: 'te_2026.01.03', date: '2026年1月3日', dateShort: '2026.01.03' }
         ];
+        
+        // 期刊数据 - 2025年
+        const issues2025 = [
+            { id: 'te_2025.12.27', date: '2025年12月27日', dateShort: '2025.12.27' },
+            { id: 'te_2025.12.20', date: '2025年12月20日', dateShort: '2025.12.20' },
+            { id: 'te_2025.12.13', date: '2025年12月13日', dateShort: '2025.12.13' },
+            { id: 'te_2025.12.06', date: '2025年12月6日', dateShort: '2025.12.06' },
+            { id: 'te_2025.11.29', date: '2025年11月29日', dateShort: '2025.11.29' },
+            { id: 'te_2025.11.22', date: '2025年11月22日', dateShort: '2025.11.22' },
+            { id: 'te_2025.11.15', date: '2025年11月15日', dateShort: '2025.11.15' },
+            { id: 'te_2025.11.08', date: '2025年11月8日', dateShort: '2025.11.08' },
+            { id: 'te_2025.11.01', date: '2025年11月1日', dateShort: '2025.11.01' },
+            { id: 'te_2025.10.25', date: '2025年10月25日', dateShort: '2025.10.25' },
+            { id: 'te_2025.10.18', date: '2025年10月18日', dateShort: '2025.10.18' },
+            { id: 'te_2025.10.11', date: '2025年10月11日', dateShort: '2025.10.11' },
+            { id: 'te_2025.10.04', date: '2025年10月4日', dateShort: '2025.10.04' },
+            { id: 'te_2025.09.27', date: '2025年9月27日', dateShort: '2025.09.27' },
+            { id: 'te_2025.09.20', date: '2025年9月20日', dateShort: '2025.09.20' },
+            { id: 'te_2025.09.13', date: '2025年9月13日', dateShort: '2025.09.13' },
+            { id: 'te_2025.09.06', date: '2025年9月6日', dateShort: '2025.09.06' },
+            { id: 'te_2025.08.30', date: '2025年8月30日', dateShort: '2025.08.30' },
+            { id: 'te_2025.08.23', date: '2025年8月23日', dateShort: '2025.08.23' },
+            { id: 'te_2025.08.16', date: '2025年8月16日', dateShort: '2025.08.16' },
+            { id: 'te_2025.08.09', date: '2025年8月9日', dateShort: '2025.08.09' },
+            { id: 'te_2025.08.02', date: '2025年8月2日', dateShort: '2025.08.02' },
+            { id: 'te_2025.07.26', date: '2025年7月26日', dateShort: '2025.07.26' },
+            { id: 'te_2025.07.19', date: '2025年7月19日', dateShort: '2025.07.19' },
+            { id: 'te_2025.07.12', date: '2025年7月12日', dateShort: '2025.07.12' },
+            { id: 'te_2025.07.05', date: '2025年7月5日', dateShort: '2025.07.05' },
+            { id: 'te_2025.06.28', date: '2025年6月28日', dateShort: '2025.06.28' },
+            { id: 'te_2025.06.21', date: '2025年6月21日', dateShort: '2025.06.21' },
+            { id: 'te_2025.06.14', date: '2025年6月14日', dateShort: '2025.06.14' },
+            { id: 'te_2025.06.07', date: '2025年6月7日', dateShort: '2025.06.07' },
+            { id: 'te_2025.05.31', date: '2025年5月31日', dateShort: '2025.05.31' },
+            { id: 'te_2025.05.24', date: '2025年5月24日', dateShort: '2025.05.24' },
+            { id: 'te_2025.05.17', date: '2025年5月17日', dateShort: '2025.05.17' },
+            { id: 'te_2025.05.10', date: '2025年5月10日', dateShort: '2025.05.10' },
+            { id: 'te_2025.05.03', date: '2025年5月3日', dateShort: '2025.05.03' },
+            { id: 'te_2025.04.26', date: '2025年4月26日', dateShort: '2025.04.26' },
+            { id: 'te_2025.04.19', date: '2025年4月19日', dateShort: '2025.04.19' },
+            { id: 'te_2025.04.12', date: '2025年4月12日', dateShort: '2025.04.12' },
+            { id: 'te_2025.04.05', date: '2025年4月5日', dateShort: '2025.04.05' },
+            { id: 'te_2025.03.29', date: '2025年3月29日', dateShort: '2025.03.29' },
+            { id: 'te_2025.03.22', date: '2025年3月22日', dateShort: '2025.03.22' },
+            { id: 'te_2025.03.15', date: '2025年3月15日', dateShort: '2025.03.15' },
+            { id: 'te_2025.03.08', date: '2025年3月8日', dateShort: '2025.03.08' },
+            { id: 'te_2025.03.01', date: '2025年3月1日', dateShort: '2025.03.01' },
+            { id: 'te_2025.02.22', date: '2025年2月22日', dateShort: '2025.02.22' },
+            { id: 'te_2025.02.15', date: '2025年2月15日', dateShort: '2025.02.15' },
+            { id: 'te_2025.02.08', date: '2025年2月8日', dateShort: '2025.02.08' },
+            { id: 'te_2025.02.01', date: '2025年2月1日', dateShort: '2025.02.01' },
+            { id: 'te_2025.01.25', date: '2025年1月25日', dateShort: '2025.01.25' },
+            { id: 'te_2025.01.18', date: '2025年1月18日', dateShort: '2025.01.18' },
+            { id: 'te_2025.01.11', date: '2025年1月11日', dateShort: '2025.01.11' },
+            { id: 'te_2025.01.04', date: '2025年1月4日', dateShort: '2025.01.04' }
+        ];
+        
+        // 合并所有期刊并生成完整URL
+        const allIssues = [...issues2026, ...issues2025];
+        const issues = allIssues.map(issue => {
+            const year = issue.id.includes('2026') ? 'te_2026' : '2025';
+            const folderPath = year === 'te_2026' ? issue.id : `2025/${issue.id}`;
+            const fileName = `TheEconomist.${issue.dateShort}`;
+            return {
+                ...issue,
+                pdf: `https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/${folderPath}/${fileName}.pdf`,
+                epub: `https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/${folderPath}/${fileName}.epub`,
+                mobi: `https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/${folderPath}/${fileName}.mobi`,
+                github: `https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/${folderPath}`
+            };
+        });
         
         let currentIssue = null;
         
