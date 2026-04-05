@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="经济学人">
-    <meta name="theme-color" content="#667eea">
+    <meta name="theme-color" content="#e3120b">
     <title>经济学人 - The Economist</title>
     <style>
         * {
@@ -14,12 +14,11 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
         }
         
         :root {
-            --primary: #667eea;
-            --primary-dark: #764ba2;
+            --primary: #e3120b;
+            --primary-dark: #c4120b;
             --bg: #f5f5f7;
             --card: #ffffff;
             --text: #1d1d1f;
@@ -36,7 +35,6 @@
             color: var(--text);
         }
         
-        /* 底部导航 */
         .tab-bar {
             position: fixed;
             bottom: 0;
@@ -61,25 +59,11 @@
             transition: all 0.2s;
         }
         
-        .tab-item.active {
-            color: var(--primary);
-        }
+        .tab-item.active { color: var(--primary); }
+        .tab-item:not(.active) { color: var(--text-secondary); }
+        .tab-icon { font-size: 24px; margin-bottom: 2px; }
+        .tab-label { font-size: 11px; font-weight: 500; }
         
-        .tab-item:not(.active) {
-            color: var(--text-secondary);
-        }
-        
-        .tab-icon {
-            font-size: 24px;
-            margin-bottom: 2px;
-        }
-        
-        .tab-label {
-            font-size: 11px;
-            font-weight: 500;
-        }
-        
-        /* 页面容器 */
         .page {
             display: none;
             padding: 16px;
@@ -87,11 +71,8 @@
             min-height: 100vh;
         }
         
-        .page.active {
-            display: block;
-        }
+        .page.active { display: block; }
         
-        /* 导航栏 */
         .nav-header {
             position: sticky;
             top: 0;
@@ -112,7 +93,6 @@
             color: var(--text-secondary);
         }
         
-        /* 卡片 */
         .card {
             background: var(--card);
             border-radius: 16px;
@@ -121,7 +101,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         
-        /* 最新期刊封面 */
         .latest-issue {
             position: relative;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
@@ -176,6 +155,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            text-decoration: none;
         }
         
         .btn-primary:active {
@@ -183,7 +163,6 @@
             opacity: 0.9;
         }
         
-        /* 期刊列表 */
         .section-title {
             font-size: 20px;
             font-weight: 700;
@@ -214,12 +193,13 @@
         .issue-cover {
             width: 60px;
             height: 80px;
-            background: linear-gradient(135deg, #e0e0e0 0%, #f0f0f0 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 24px;
+            color: white;
             margin-right: 16px;
             flex-shrink: 0;
         }
@@ -244,164 +224,46 @@
             color: var(--text-secondary);
         }
         
-        /* 文章列表 */
-        .article-item {
-            display: flex;
-            align-items: flex-start;
-            padding: 16px 0;
-            border-bottom: 1px solid var(--border);
-            cursor: pointer;
+        .download-section {
+            margin-top: 20px;
         }
         
-        .article-item:last-child {
-            border-bottom: none;
-        }
-        
-        .article-number {
-            width: 28px;
-            height: 28px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 600;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-        
-        .article-content {
-            flex: 1;
-        }
-        
-        .article-title {
+        .download-title {
             font-size: 16px;
             font-weight: 600;
-            margin-bottom: 4px;
-            line-height: 1.4;
-        }
-        
-        .article-category {
-            font-size: 13px;
-            color: var(--primary);
-            font-weight: 500;
-        }
-        
-        .article-audio {
-            width: 36px;
-            height: 36px;
-            background: #f0f0f0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            margin-left: 8px;
-            flex-shrink: 0;
-        }
-        
-        /* 音频播放器 */
-        .audio-player {
-            position: fixed;
-            bottom: 80px;
-            left: 16px;
-            right: 16px;
-            background: var(--card);
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            display: none;
-            z-index: 999;
-        }
-        
-        .audio-player.active {
-            display: block;
-        }
-        
-        .audio-info {
-            display: flex;
-            align-items: center;
             margin-bottom: 12px;
         }
         
-        .audio-cover {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            border-radius: 8px;
+        .download-buttons {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-right: 12px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
         
-        .audio-text {
+        .download-btn {
             flex: 1;
-        }
-        
-        .audio-title {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .audio-author {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-        
-        .audio-controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
-        }
-        
-        .audio-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
+            min-width: 80px;
+            background: #f0f0f0;
             border: none;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text);
+            text-align: center;
+        }
+        
+        .download-btn.primary {
             background: var(--primary);
             color: white;
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         
-        .audio-btn.secondary {
-            width: 40px;
-            height: 40px;
-            background: #f0f0f0;
-            color: var(--text);
-            font-size: 18px;
+        .download-btn:active {
+            opacity: 0.8;
         }
         
-        .progress-bar {
-            height: 4px;
-            background: #e0e0e0;
-            border-radius: 2px;
-            margin: 12px 0;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: var(--primary);
-            border-radius: 2px;
-            width: 0%;
-            transition: width 0.1s;
-        }
-        
-        /* 阅读页面 */
         .reader-header {
             display: flex;
             align-items: center;
@@ -448,79 +310,27 @@
             cursor: pointer;
         }
         
-        /* 文章内容 */
-        .article-body {
-            background: var(--card);
-            border-radius: 16px;
-            padding: 24px;
-            line-height: 1.8;
-            font-size: 17px;
-        }
-        
-        .article-body h1 {
-            font-size: 24px;
-            font-weight: 700;
+        .info-card {
+            background: #e8f4fd;
+            border-radius: 12px;
+            padding: 16px;
             margin-bottom: 16px;
-            line-height: 1.3;
         }
         
-        .article-body h2 {
-            font-size: 20px;
+        .info-title {
+            font-size: 14px;
             font-weight: 600;
-            margin: 24px 0 12px;
-        }
-        
-        .article-body p {
-            margin-bottom: 16px;
-            color: #333;
-        }
-        
-        /* 加载状态 */
-        .loading {
-            text-align: center;
-            padding: 60px 20px;
-        }
-        
-        .loading-spinner {
-            width: 48px;
-            height: 48px;
-            border: 3px solid #f0f0f0;
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* 空状态 */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-secondary);
-        }
-        
-        .empty-icon {
-            font-size: 64px;
-            margin-bottom: 16px;
-        }
-        
-        .empty-text {
-            font-size: 17px;
+            color: #0066cc;
             margin-bottom: 8px;
         }
         
-        .empty-subtext {
-            font-size: 15px;
-            opacity: 0.8;
+        .info-text {
+            font-size: 13px;
+            color: #333;
+            line-height: 1.5;
         }
         
-        /* 隐藏 */
-        .hidden {
-            display: none !important;
-        }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -532,13 +342,13 @@
         </div>
         
         <!-- 最新期刊 -->
-        <div class="latest-issue" onclick="openLatestIssue()">
+        <div class="latest-issue" onclick="openIssue('te_2026.04.04')">
             <div class="issue-label">Latest Issue</div>
             <div class="issue-title">The Economist</div>
             <div class="issue-date" id="latest-date">2026年4月4日</div>
             <button class="btn-primary">
                 <span>📖</span>
-                <span>立即阅读</span>
+                <span>查看下载</span>
             </button>
         </div>
         
@@ -554,10 +364,6 @@
         <div class="reader-header">
             <div class="back-btn" onclick="showPage('home')">←</div>
             <div class="reader-title" id="issue-detail-title">期刊详情</div>
-            <div class="reader-actions">
-                <div class="reader-action" onclick="downloadCurrentIssue()">⬇️</div>
-                <div class="reader-action">⋮</div>
-            </div>
         </div>
         
         <div class="card">
@@ -566,32 +372,32 @@
                 <div style="margin-left: 16px;">
                     <div style="font-size: 20px; font-weight: 700; margin-bottom: 4px;" id="issue-title">The Economist</div>
                     <div style="font-size: 15px; color: var(--text-secondary);" id="issue-date">2026.04.04</div>
-                    <div style="margin-top: 12px;">
-                        <span style="background: #e8f5e9; color: #4caf50; padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: 500;">✓ 已缓存</span>
-                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="section-title">本期文章</div>
-        <div class="card" id="article-list">
-            <!-- 动态生成文章列表 -->
-        </div>
-    </div>
-    
-    <!-- 阅读页面 -->
-    <div id="page-reader" class="page">
-        <div class="reader-header">
-            <div class="back-btn" onclick="showPage('issue')">←</div>
-            <div class="reader-title" id="article-title">文章标题</div>
-            <div class="reader-actions">
-                <div class="reader-action" onclick="toggleAudio()">🔊</div>
-                <div class="reader-action">⋮</div>
+        <div class="info-card">
+            <div class="info-title">💡 阅读提示</div>
+            <div class="info-text">
+                点击下方的下载按钮获取期刊文件，建议使用以下App打开：<br>
+                • PDF：系统自带图书App或Adobe Acrobat<br>
+                • EPUB：Apple Books、KyBook<br>
+                • MOBI：Kindle App
             </div>
         </div>
         
-        <div class="article-body" id="article-content">
-            <!-- 文章内容 -->
+        <div class="card">
+            <div class="download-title">选择格式下载</div>
+            <div class="download-buttons" id="download-buttons">
+                <!-- 动态生成下载按钮 -->
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="download-title">在线阅读</div>
+            <a href="#" class="download-btn primary" id="github-link" target="_blank" style="display: block; text-align: center; margin-top: 10px;">
+                在 GitHub 上查看
+            </a>
         </div>
     </div>
     
@@ -603,66 +409,20 @@
         
         <div class="card">
             <div style="display: flex; align-items: center; padding: 8px 0;">
-                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px;">👤</div>
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white;">👤</div>
                 <div style="margin-left: 16px;">
                     <div style="font-size: 18px; font-weight: 600;">经济学人读者</div>
-                    <div style="font-size: 14px; color: var(--text-secondary); margin-top: 4px;">已缓存 3 期期刊</div>
+                    <div style="font-size: 14px; color: var(--text-secondary); margin-top: 4px;">数据来源：hehonghui/awesome-english-ebooks</div>
                 </div>
             </div>
         </div>
         
-        <div class="section-title">阅读统计</div>
+        <div class="section-title">关于</div>
         <div class="card">
-            <div style="display: flex; justify-content: space-around; text-align: center;">
-                <div>
-                    <div style="font-size: 28px; font-weight: 700; color: var(--primary);">12</div>
-                    <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">已读文章</div>
-                </div>
-                <div>
-                    <div style="font-size: 28px; font-weight: 700; color: var(--primary);">3</div>
-                    <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">已缓存期刊</div>
-                </div>
-                <div>
-                    <div style="font-size: 28px; font-weight: 700; color: var(--primary);">5h</div>
-                    <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">听音频时长</div>
-                </div>
+            <div style="font-size: 14px; line-height: 1.8; color: var(--text-secondary);">
+                <p style="margin-bottom: 12px;">本应用数据来源于开源项目 awesome-english-ebooks，仅供学习交流使用。</p>
+                <p>期刊每周五晚更新，支持 PDF、EPUB、MOBI 三种格式下载。</p>
             </div>
-        </div>
-        
-        <div class="section-title">设置</div>
-        <div class="card">
-            <div class="article-item" style="padding: 16px 0;">
-                <div class="article-content">
-                    <div class="article-title">清除缓存</div>
-                </div>
-                <div class="issue-arrow">›</div>
-            </div>
-            <div class="article-item" style="padding: 16px 0;">
-                <div class="article-content">
-                    <div class="article-title">关于</div>
-                </div>
-                <div class="issue-arrow">›</div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- 音频播放器 -->
-    <div class="audio-player" id="audio-player">
-        <div class="audio-info">
-            <div class="audio-cover">🔊</div>
-            <div class="audio-text">
-                <div class="audio-title" id="audio-title">音频标题</div>
-                <div class="audio-author">经济学人</div>
-            </div>
-            <div style="font-size: 20px; cursor: pointer;" onclick="closeAudio()">✕</div>
-        </div>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progress-fill"></div>
-        </div>
-        <div class="audio-controls">
-            <button class="audio-btn secondary" onclick="seekBackward()">⏮</button>
-            <button class="audio-btn" id="play-btn" onclick="togglePlay()">▶</button>
-            <button class="audio-btn secondary" onclick="seekForward()">⏭</button>
         </div>
     </div>
     
@@ -672,47 +432,68 @@
             <div class="tab-icon">📚</div>
             <div class="tab-label">期刊</div>
         </div>
-        <div class="tab-item" onclick="switchTab('bookmarks')">
-            <div class="tab-icon">🔖</div>
-            <div class="tab-label">收藏</div>
-        </div>
         <div class="tab-item" onclick="switchTab('profile')">
             <div class="tab-icon">👤</div>
             <div class="tab-label">我的</div>
         </div>
     </div>
-    
-    <!-- 音频元素 -->
-    <audio id="audio-element" preload="none"></audio>
 
     <script>
-        // 数据
+        // 期刊数据 - 对应 GitHub 仓库结构
         const issues = [
-            { id: 'te_2026.04.04', name: 'te_2026.04.04', date: '2026年4月4日', dateShort: '2026.04.04', cached: true },
-            { id: 'te_2026.03.28', name: 'te_2026.03.28', date: '2026年3月28日', dateShort: '2026.03.28', cached: true },
-            { id: 'te_2026.03.21', name: 'te_2026.03.21', date: '2026年3月21日', dateShort: '2026.03.21', cached: false },
-            { id: 'te_2026.03.14', name: 'te_2026.03.14', date: '2026年3月14日', dateShort: '2026.03.14', cached: false },
-            { id: 'te_2026.03.07', name: 'te_2026.03.07', date: '2026年3月7日', dateShort: '2026.03.07', cached: false },
+            { 
+                id: 'te_2026.04.04', 
+                name: 'te_2026.04.04', 
+                date: '2026年4月4日', 
+                dateShort: '2026.04.04',
+                pdf: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.04.04/TheEconomist.2026.04.04.pdf',
+                epub: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.04.04/TheEconomist.2026.04.04.epub',
+                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.04.04/TheEconomist.2026.04.04.mobi',
+                github: 'https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/te_2026.04.04'
+            },
+            { 
+                id: 'te_2026.03.28', 
+                name: 'te_2026.03.28', 
+                date: '2026年3月28日', 
+                dateShort: '2026.03.28',
+                pdf: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.28/TheEconomist.2026.03.28.pdf',
+                epub: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.28/TheEconomist.2026.03.28.epub',
+                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.28/TheEconomist.2026.03.28.mobi',
+                github: 'https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/te_2026.03.28'
+            },
+            { 
+                id: 'te_2026.03.21', 
+                name: 'te_2026.03.21', 
+                date: '2026年3月21日', 
+                dateShort: '2026.03.21',
+                pdf: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.21/TheEconomist.2026.03.21.pdf',
+                epub: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.21/TheEconomist.2026.03.21.epub',
+                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.21/TheEconomist.2026.03.21.mobi',
+                github: 'https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/te_2026.03.21'
+            },
+            { 
+                id: 'te_2026.03.14', 
+                name: 'te_2026.03.14', 
+                date: '2026年3月14日', 
+                dateShort: '2026.03.14',
+                pdf: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.14/TheEconomist.2026.03.14.pdf',
+                epub: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.14/TheEconomist.2026.03.14.epub',
+                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.14/TheEconomist.2026.03.14.mobi',
+                github: 'https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/te_2026.03.14'
+            },
+            { 
+                id: 'te_2026.03.07', 
+                name: 'te_2026.03.07', 
+                date: '2026年3月7日', 
+                dateShort: '2026.03.07',
+                pdf: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.07/TheEconomist.2026.03.07.pdf',
+                epub: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.07/TheEconomist.2026.03.07.epub',
+                mobi: 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/01_economist/te_2026.03.07/TheEconomist.2026.03.07.mobi',
+                github: 'https://github.com/hehonghui/awesome-english-ebooks/tree/master/01_economist/te_2026.03.07'
+            },
         ];
         
-        const articles = {
-            'te_2026.04.04': [
-                { id: 1, title: 'The world this week: Politics', category: 'World', hasAudio: true },
-                { id: 2, title: 'The world this week: Business', category: 'Business', hasAudio: true },
-                { id: 3, title: 'Leaders: The future of global trade', category: 'Leaders', hasAudio: true },
-                { id: 4, title: 'Letters: On artificial intelligence', category: 'Letters', hasAudio: false },
-                { id: 5, title: 'Briefing: Climate change economics', category: 'Briefing', hasAudio: true },
-                { id: 6, title: 'United States: Immigration reform', category: 'United States', hasAudio: true },
-                { id: 7, title: 'The Americas: Brazil\'s economy', category: 'The Americas', hasAudio: false },
-                { id: 8, title: 'Asia: China\'s tech industry', category: 'Asia', hasAudio: true },
-            ]
-        };
-        
-        // 当前状态
         let currentIssue = null;
-        let currentArticle = null;
-        let isPlaying = false;
-        let audioElement = document.getElementById('audio-element');
         
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
@@ -727,7 +508,7 @@
                     <div class="issue-cover">📰</div>
                     <div class="issue-info">
                         <div class="issue-name">The Economist</div>
-                        <div class="issue-meta">${issue.date} · ${issue.cached ? '✓ 已缓存' : '在线阅读'}</div>
+                        <div class="issue-meta">${issue.date}</div>
                     </div>
                     <div class="issue-arrow">›</div>
                 </div>
@@ -739,12 +520,14 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(`page-${pageName}`).classList.add('active');
             
-            // 更新底部导航
             if (pageName === 'home') {
-                switchTab('home');
+                document.querySelectorAll('.tab-item').forEach((t, i) => {
+                    t.classList.toggle('active', i === 0);
+                });
             } else if (pageName === 'profile') {
-                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-item')[2].classList.add('active');
+                document.querySelectorAll('.tab-item').forEach((t, i) => {
+                    t.classList.toggle('active', i === 1);
+                });
             }
         }
         
@@ -752,23 +535,9 @@
         function switchTab(tabName) {
             if (tabName === 'home') {
                 showPage('home');
-                document.querySelectorAll('.tab-item').forEach((t, i) => {
-                    t.classList.toggle('active', i === 0);
-                });
-            } else if (tabName === 'bookmarks') {
-                // 显示空状态
-                alert('收藏功能开发中...');
             } else if (tabName === 'profile') {
                 showPage('profile');
-                document.querySelectorAll('.tab-item').forEach((t, i) => {
-                    t.classList.toggle('active', i === 2);
-                });
             }
-        }
-        
-        // 打开最新一期
-        function openLatestIssue() {
-            openIssue('te_2026.04.04');
         }
         
         // 打开特定期刊
@@ -780,124 +549,18 @@
             document.getElementById('issue-detail-title').textContent = currentIssue.dateShort;
             document.getElementById('issue-title').textContent = 'The Economist';
             document.getElementById('issue-date').textContent = currentIssue.dateShort;
+            document.getElementById('github-link').href = currentIssue.github;
             
-            // 渲染文章列表
-            renderArticleList(issueId);
+            // 生成下载按钮
+            const buttonsHtml = `
+                <a href="${currentIssue.pdf}" class="download-btn primary" download target="_blank">PDF</a>
+                <a href="${currentIssue.epub}" class="download-btn" download target="_blank">EPUB</a>
+                <a href="${currentIssue.mobi}" class="download-btn" download target="_blank">MOBI</a>
+            `;
+            document.getElementById('download-buttons').innerHTML = buttonsHtml;
             
             // 显示期刊详情页
             showPage('issue');
-        }
-        
-        // 渲染文章列表
-        function renderArticleList(issueId) {
-            const list = document.getElementById('article-list');
-            const issueArticles = articles[issueId] || [];
-            
-            list.innerHTML = issueArticles.map((article, index) => `
-                <div class="article-item" onclick="openArticle(${article.id})">
-                    <div class="article-number">${index + 1}</div>
-                    <div class="article-content">
-                        <div class="article-title">${article.title}</div>
-                        <div class="article-category">${article.category}</div>
-                    </div>
-                    ${article.hasAudio ? '<div class="article-audio">🔊</div>' : ''}
-                </div>
-            `).join('');
-        }
-        
-        // 打开文章
-        function openArticle(articleId) {
-            const article = articles[currentIssue.id]?.find(a => a.id === articleId);
-            if (!article) return;
-            
-            currentArticle = article;
-            document.getElementById('article-title').textContent = article.title;
-            
-            // 生成文章内容（示例）
-            document.getElementById('article-content').innerHTML = `
-                <h1>${article.title}</h1>
-                <p style="color: var(--text-secondary); margin-bottom: 24px;">${article.category} · The Economist · ${currentIssue.date}</p>
-                <p>这是一篇来自《经济学人》的深度文章。在实际应用中，这里会显示完整的文章内容。</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                <h2>Key Points</h2>
-                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                <h2>Analysis</h2>
-                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
-            `;
-            
-            showPage('reader');
-        }
-        
-        // 下载当前期刊
-        function downloadCurrentIssue() {
-            if (currentIssue) {
-                currentIssue.cached = true;
-                alert(`《The Economist》${currentIssue.dateShort} 已添加到缓存`);
-                renderIssueList();
-            }
-        }
-        
-        // 音频控制
-        function toggleAudio() {
-            if (!currentArticle) return;
-            
-            if (!currentArticle.hasAudio) {
-                alert('这篇文章暂无音频');
-                return;
-            }
-            
-            document.getElementById('audio-player').classList.add('active');
-            document.getElementById('audio-title').textContent = currentArticle.title;
-            
-            // 模拟播放
-            if (!isPlaying) {
-                togglePlay();
-            }
-        }
-        
-        function togglePlay() {
-            isPlaying = !isPlaying;
-            const btn = document.getElementById('play-btn');
-            btn.textContent = isPlaying ? '⏸' : '▶';
-            
-            if (isPlaying) {
-                // 模拟进度更新
-                updateProgress();
-            }
-        }
-        
-        function updateProgress() {
-            if (!isPlaying) return;
-            
-            const fill = document.getElementById('progress-fill');
-            let width = parseFloat(fill.style.width) || 0;
-            width += 0.5;
-            if (width > 100) width = 0;
-            fill.style.width = width + '%';
-            
-            setTimeout(updateProgress, 1000);
-        }
-        
-        function closeAudio() {
-            document.getElementById('audio-player').classList.remove('active');
-            isPlaying = false;
-            document.getElementById('play-btn').textContent = '▶';
-        }
-        
-        function seekBackward() {
-            const fill = document.getElementById('progress-fill');
-            let width = parseFloat(fill.style.width) || 0;
-            width = Math.max(0, width - 10);
-            fill.style.width = width + '%';
-        }
-        
-        function seekForward() {
-            const fill = document.getElementById('progress-fill');
-            let width = parseFloat(fill.style.width) || 0;
-            width = Math.min(100, width + 10);
-            fill.style.width = width + '%';
         }
     </script>
 </body>
