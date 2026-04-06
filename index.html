@@ -99,7 +99,7 @@
             margin: 0 16px 20px;
             border-radius: 20px;
             overflow: hidden;
-            background: var(--card);
+            background: linear-gradient(135deg, var(--card) 0%, var(--card-light) 100%);
         }
         
         .magazine-hero-bg {
@@ -110,6 +110,7 @@
             bottom: 0;
             background-size: cover;
             background-position: center;
+            opacity: 0.6;
         }
         
         .magazine-hero-overlay {
@@ -118,7 +119,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+            background: linear-gradient(to bottom, rgba(15,15,26,0.3) 0%, rgba(15,15,26,0.95) 100%);
         }
         
         .magazine-hero-content {
@@ -139,6 +140,11 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.5);
             object-fit: cover;
             flex-shrink: 0;
+            background: linear-gradient(135deg, var(--card-light) 0%, var(--card) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
         }
         
         .hero-info {
@@ -150,12 +156,11 @@
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 4px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
         
         .hero-subtitle {
             font-size: 14px;
-            color: rgba(255,255,255,0.8);
+            color: var(--text-secondary);
             margin-bottom: 12px;
         }
         
@@ -205,7 +210,7 @@
         
         .cover-item {
             flex-shrink: 0;
-            width: 140px;
+            width: 120px;
             cursor: pointer;
             transition: transform 0.2s;
         }
@@ -215,13 +220,17 @@
         }
         
         .cover-image {
-            width: 140px;
-            height: 180px;
+            width: 120px;
+            height: 156px;
             border-radius: 12px;
             object-fit: cover;
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
             margin-bottom: 10px;
-            background: var(--card);
+            background: linear-gradient(135deg, var(--card-light) 0%, var(--card) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
         }
         
         .cover-date {
@@ -250,7 +259,8 @@
         
         .detail-header {
             position: relative;
-            height: 360px;
+            height: 320px;
+            background: linear-gradient(135deg, var(--card) 0%, var(--card-light) 100%);
         }
         
         .detail-bg {
@@ -261,6 +271,7 @@
             bottom: 0;
             background-size: cover;
             background-position: center;
+            opacity: 0.4;
         }
         
         .detail-overlay {
@@ -269,7 +280,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(15,15,26,1) 100%);
+            background: linear-gradient(to bottom, rgba(15,15,26,0.3) 0%, rgba(15,15,26,1) 100%);
         }
         
         .detail-nav {
@@ -312,12 +323,17 @@
         }
         
         .detail-cover {
-            width: 130px;
-            height: 170px;
+            width: 120px;
+            height: 156px;
             border-radius: 10px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.5);
             object-fit: cover;
             flex-shrink: 0;
+            background: linear-gradient(135deg, var(--card-light) 0%, var(--card) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
         }
         
         .detail-info {
@@ -468,7 +484,7 @@
                 <button class="back-btn" onclick="closeDetail()">←</button>
             </div>
             <div class="detail-content">
-                <img class="detail-cover" id="detail-cover" src="" alt="">
+                <div class="detail-cover" id="detail-cover">📰</div>
                 <div class="detail-info">
                     <div class="detail-mag-name" id="detail-mag-name">The Economist</div>
                     <div class="detail-issue-date" id="detail-issue-date">2026.04.04</div>
@@ -518,6 +534,7 @@
             economist: {
                 name: 'The Economist',
                 nameCN: '经济学人',
+                icon: '📰',
                 color: '#e3120b',
                 folder: '01_economist',
                 filePrefix: 'TheEconomist',
@@ -532,6 +549,7 @@
             nyorker: {
                 name: 'The New Yorker',
                 nameCN: '纽约客',
+                icon: '🗽',
                 color: '#000000',
                 folder: '02_new_yorker',
                 filePrefix: 'TheNewYorker',
@@ -546,6 +564,7 @@
             atlantic: {
                 name: 'The Atlantic',
                 nameCN: '大西洋月刊',
+                icon: '🌊',
                 color: '#003366',
                 folder: '04_atlantic',
                 filePrefix: 'TheAtlantic',
@@ -560,6 +579,7 @@
             wired: {
                 name: 'WIRED',
                 nameCN: '连线',
+                icon: '⚡',
                 color: '#000000',
                 folder: '05_wired',
                 filePrefix: 'Wired',
@@ -574,13 +594,6 @@
         };
         
         let currentMag = 'economist';
-        
-        // 生成封面URL（使用GitHub缩略图或默认封面）
-        function getCoverUrl(magKey, issue) {
-            const mag = magazines[magKey];
-            // 使用GitHub raw链接作为封面
-            return `https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/${mag.folder}/${issue.folder}/${mag.filePrefix}.${issue.date}.jpg`;
-        }
         
         // 生成下载链接
         function getDownloadLinks(magKey, issue) {
@@ -619,16 +632,14 @@
         function renderMagazine(magKey) {
             const mag = magazines[magKey];
             const latest = mag.issues[0];
-            const coverUrl = getCoverUrl(magKey, latest);
             const links = getDownloadLinks(magKey, latest);
             
             const html = `
-                <!-- 头部大图 -->
+                <!-- 头部区域 -->
                 <div class="magazine-hero">
-                    <div class="magazine-hero-bg" style="background-image: url('${coverUrl}')"></div>
                     <div class="magazine-hero-overlay"></div>
                     <div class="magazine-hero-content">
-                        <img class="hero-cover" src="${coverUrl}" alt="${mag.name}" onerror="this.style.display='none'">
+                        <div class="hero-cover">${mag.icon}</div>
                         <div class="hero-info">
                             <div class="hero-title">${mag.name}</div>
                             <div class="hero-subtitle">最新一期 · ${latest.dateCN}</div>
@@ -648,7 +659,7 @@
                 <div class="cover-scroll">
                     ${mag.issues.map((issue, index) => `
                         <div class="cover-item" onclick="openDetail('${magKey}', ${index})">
-                            <img class="cover-image" src="${getCoverUrl(magKey, issue)}" alt="${issue.date}" onerror="this.style.background='linear-gradient(135deg, ${mag.color} 0%, #1a1a2e 100%)'">
+                            <div class="cover-image">${mag.icon}</div>
                             <div class="cover-date">${issue.dateCN}</div>
                         </div>
                     `).join('')}
@@ -662,12 +673,10 @@
         function openDetail(magKey, issueIndex) {
             const mag = magazines[magKey];
             const issue = mag.issues[issueIndex];
-            const coverUrl = getCoverUrl(magKey, issue);
             const links = getDownloadLinks(magKey, issue);
             
             // 设置详情页内容
-            document.getElementById('detail-bg').style.backgroundImage = `url('${coverUrl}')`;
-            document.getElementById('detail-cover').src = coverUrl;
+            document.getElementById('detail-cover').textContent = mag.icon;
             document.getElementById('detail-mag-name').textContent = mag.name;
             document.getElementById('detail-mag-name').style.color = mag.color;
             document.getElementById('detail-issue-date').textContent = issue.date;
