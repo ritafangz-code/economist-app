@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="英语期刊">
-    <meta name="theme-color" content="#e3120b">
+    <meta name="theme-color" content="#1a1a2e">
     <title>英语期刊 - English Magazines</title>
     <style>
         * {
@@ -18,15 +18,12 @@
         
         :root {
             --primary: #e3120b;
-            --primary-dark: #c4120b;
-            --bg: #f5f5f7;
-            --card: #ffffff;
-            --text: #1d1d1f;
-            --text-secondary: #86868b;
-            --border: #d2d2d7;
-            --nyorker: #000000;
-            --atlantic: #003366;
-            --wired: #000000;
+            --bg: #0f0f1a;
+            --card: #1a1a2e;
+            --card-light: #252542;
+            --text: #ffffff;
+            --text-secondary: #a0a0b0;
+            --border: #2a2a40;
         }
         
         body {
@@ -34,630 +31,663 @@
             background: var(--bg);
             min-height: 100vh;
             padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
+            padding-bottom: calc(80px + env(safe-area-inset-bottom));
             color: var(--text);
         }
         
-        .tab-bar {
+        /* 顶部导航 */
+        .top-nav {
             position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 15, 26, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 12px 16px;
+            padding-top: calc(12px + env(safe-area-inset-top));
+        }
+        
+        .top-nav-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        /* 期刊标签导航 */
+        .mag-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 4px;
+        }
+        
+        .mag-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .mag-tab {
+            flex-shrink: 0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        
+        .mag-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            padding-top: calc(100px + env(safe-area-inset-top));
+        }
+        
+        /* 期刊头部大图 */
+        .magazine-hero {
+            position: relative;
+            height: 280px;
+            margin: 0 16px 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--card);
+        }
+        
+        .magazine-hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .magazine-hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+        }
+        
+        .magazine-hero-content {
+            position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
-            z-index: 1000;
-        }
-        
-        .tab-item {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .tab-item.active { color: var(--primary); }
-        .tab-item:not(.active) { color: var(--text-secondary); }
-        .tab-icon { font-size: 24px; margin-bottom: 2px; }
-        .tab-label { font-size: 11px; font-weight: 500; }
-        
-        .page {
-            display: none;
-            padding: 16px;
-            padding-bottom: 100px;
-            min-height: 100vh;
-        }
-        
-        .page.active { display: block; }
-        
-        .nav-header {
-            position: sticky;
-            top: 0;
-            background: var(--bg);
-            padding: 12px 0;
-            z-index: 100;
-            backdrop-filter: blur(20px);
-        }
-        
-        .nav-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        
-        .nav-subtitle {
-            font-size: 15px;
-            color: var(--text-secondary);
-        }
-        
-        .card {
-            background: var(--card);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-        
-        .magazine-section {
-            margin-bottom: 24px;
-        }
-        
-        .magazine-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-            padding: 0 4px;
-        }
-        
-        .magazine-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            margin-right: 12px;
-            color: white;
-        }
-        
-        .magazine-icon.economist { background: var(--primary); }
-        .magazine-icon.nyorker { background: var(--nyorker); }
-        .magazine-icon.atlantic { background: var(--atlantic); }
-        .magazine-icon.wired { background: var(--wired); }
-        
-        .magazine-name {
-            font-size: 18px;
-            font-weight: 700;
-            flex: 1;
-        }
-        
-        .magazine-count {
-            font-size: 13px;
-            color: var(--text-secondary);
-            background: #f0f0f0;
-            padding: 4px 10px;
-            border-radius: 12px;
-        }
-        
-        .latest-issue {
-            position: relative;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            border-radius: 20px;
             padding: 24px;
-            color: white;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-        
-        .latest-issue::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 200px;
-            height: 200px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-        }
-        
-        .issue-label {
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.9;
-            margin-bottom: 8px;
-        }
-        
-        .issue-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        
-        .issue-date {
-            font-size: 15px;
-            opacity: 0.9;
-            margin-bottom: 20px;
-        }
-        
-        .btn-primary {
-            background: white;
-            color: var(--primary);
-            border: none;
-            padding: 14px 28px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-        }
-        
-        .btn-primary:active {
-            transform: scale(0.98);
-            opacity: 0.9;
-        }
-        
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin: 24px 0 16px;
-        }
-        
-        .issue-list {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            align-items: flex-end;
+            gap: 16px;
         }
         
-        .issue-item {
-            display: flex;
-            align-items: center;
-            background: var(--card);
-            border-radius: 14px;
-            padding: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .issue-item:active {
-            transform: scale(0.98);
-            background: #f0f0f0;
-        }
-        
-        .issue-cover {
-            width: 48px;
-            height: 64px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: white;
-            margin-right: 14px;
+        .hero-cover {
+            width: 100px;
+            height: 130px;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            object-fit: cover;
             flex-shrink: 0;
         }
         
-        .issue-cover.economist { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); }
-        .issue-cover.nyorker { background: linear-gradient(135deg, #333 0%, #000 100%); }
-        .issue-cover.atlantic { background: linear-gradient(135deg, #004080 0%, var(--atlantic) 100%); }
-        .issue-cover.wired { background: linear-gradient(135deg, #333 0%, #000 100%); }
-        
-        .issue-info {
+        .hero-info {
             flex: 1;
+            padding-bottom: 4px;
         }
         
-        .issue-name {
-            font-size: 15px;
+        .hero-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero-subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 12px;
+        }
+        
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
             font-weight: 600;
-            margin-bottom: 2px;
+            cursor: pointer;
+            border: none;
         }
         
-        .issue-meta {
+        /* 期刊列表 */
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 16px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .section-title span {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* 横向滚动封面列表 */
+        .cover-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 0 16px 20px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .cover-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .cover-item {
+            flex-shrink: 0;
+            width: 140px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .cover-item:active {
+            transform: scale(0.95);
+        }
+        
+        .cover-image {
+            width: 140px;
+            height: 180px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            margin-bottom: 10px;
+            background: var(--card);
+        }
+        
+        .cover-date {
             font-size: 13px;
             color: var(--text-secondary);
+            text-align: center;
         }
         
-        .issue-arrow {
-            font-size: 18px;
+        /* 详情页 */
+        .detail-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            z-index: 2000;
+            overflow-y: auto;
+            padding-bottom: 100px;
+        }
+        
+        .detail-page.active {
+            display: block;
+        }
+        
+        .detail-header {
+            position: relative;
+            height: 360px;
+        }
+        
+        .detail-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .detail-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(15,15,26,1) 100%);
+        }
+        
+        .detail-nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 16px;
+            padding-top: calc(16px + env(safe-area-inset-top));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10;
+        }
+        
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            color: white;
+        }
+        
+        .detail-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 24px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-end;
+        }
+        
+        .detail-cover {
+            width: 130px;
+            height: 170px;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        
+        .detail-info {
+            flex: 1;
+            padding-bottom: 8px;
+        }
+        
+        .detail-mag-name {
+            font-size: 14px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .detail-issue-date {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .detail-issue-sub {
+            font-size: 14px;
             color: var(--text-secondary);
+        }
+        
+        /* 下载选项 */
+        .download-section {
+            padding: 24px;
         }
         
         .download-title {
             font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 12px;
+            font-weight: 700;
+            margin-bottom: 16px;
         }
         
-        .download-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
         }
         
-        .download-btn {
-            flex: 1;
-            min-width: 80px;
-            background: #f0f0f0;
-            border: none;
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
+        .download-option {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 20px 12px;
+            text-align: center;
             cursor: pointer;
+            transition: all 0.2s;
             text-decoration: none;
             color: var(--text);
-            text-align: center;
+            border: 1px solid var(--border);
         }
         
-        .download-btn.primary {
-            background: var(--primary);
-            color: white;
+        .download-option:active {
+            transform: scale(0.95);
+            background: var(--card-light);
         }
         
-        .download-btn:active {
-            opacity: 0.8;
-        }
-        
-        .reader-header {
-            display: flex;
-            align-items: center;
-            padding: 12px 0;
-            margin-bottom: 16px;
-        }
-        
-        .back-btn {
-            width: 36px;
-            height: 36px;
-            background: var(--card);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            cursor: pointer;
-            margin-right: 12px;
-        }
-        
-        .reader-title {
-            flex: 1;
-            font-size: 17px;
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .info-card {
-            background: #e8f4fd;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-        
-        .info-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #0066cc;
+        .download-icon {
+            font-size: 28px;
             margin-bottom: 8px;
         }
         
-        .info-text {
-            font-size: 13px;
-            color: #333;
-            line-height: 1.5;
+        .download-label {
+            font-size: 14px;
+            font-weight: 600;
         }
         
+        .download-format {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+        
+        .github-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            width: 100%;
+        }
+        
+        /* 提示卡片 */
+        .tip-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 0 24px 24px;
+            border: 1px solid var(--border);
+        }
+        
+        .tip-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .tip-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* 隐藏 */
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
-    <!-- 首页 -->
-    <div id="page-home" class="page active">
-        <div class="nav-header">
-            <div class="nav-title">英语期刊</div>
-            <div class="nav-subtitle">每周精选，深度阅读</div>
-        </div>
-        
-        <!-- 经济学人 -->
-        <div class="magazine-section">
-            <div class="magazine-header">
-                <div class="magazine-icon economist">📰</div>
-                <div class="magazine-name">The Economist</div>
-                <div class="magazine-count">近5期</div>
-            </div>
-            <div class="issue-list" id="economist-list"></div>
-        </div>
-        
-        <!-- 纽约客 -->
-        <div class="magazine-section">
-            <div class="magazine-header">
-                <div class="magazine-icon nyorker">🗽</div>
-                <div class="magazine-name">The New Yorker</div>
-                <div class="magazine-count">近5期</div>
-            </div>
-            <div class="issue-list" id="nyorker-list"></div>
-        </div>
-        
-        <!-- 大西洋月刊 -->
-        <div class="magazine-section">
-            <div class="magazine-header">
-                <div class="magazine-icon atlantic">🌊</div>
-                <div class="magazine-name">The Atlantic</div>
-                <div class="magazine-count">近5期</div>
-            </div>
-            <div class="issue-list" id="atlantic-list"></div>
-        </div>
-        
-        <!-- 连线杂志 -->
-        <div class="magazine-section">
-            <div class="magazine-header">
-                <div class="magazine-icon wired">⚡</div>
-                <div class="magazine-name">WIRED</div>
-                <div class="magazine-count">近5期</div>
-            </div>
-            <div class="issue-list" id="wired-list"></div>
+    <!-- 顶部导航 -->
+    <div class="top-nav">
+        <div class="top-nav-title">英语期刊</div>
+        <div class="mag-tabs">
+            <div class="mag-tab active" onclick="switchMag('economist')">经济学人</div>
+            <div class="mag-tab" onclick="switchMag('nyorker')">纽约客</div>
+            <div class="mag-tab" onclick="switchMag('atlantic')">大西洋</div>
+            <div class="mag-tab" onclick="switchMag('wired')">连线</div>
         </div>
     </div>
     
-    <!-- 期刊详情页 -->
-    <div id="page-issue" class="page">
-        <div class="reader-header">
-            <div class="back-btn" onclick="showPage('home')">←</div>
-            <div class="reader-title" id="issue-detail-title">期刊详情</div>
-        </div>
-        
-        <div class="card">
-            <div style="display: flex; align-items: center; margin-bottom: 16px;">
-                <div class="issue-cover" id="detail-cover" style="width: 80px; height: 110px; font-size: 36px;">📰</div>
-                <div style="margin-left: 16px;">
-                    <div style="font-size: 20px; font-weight: 700; margin-bottom: 4px;" id="issue-title">The Economist</div>
-                    <div style="font-size: 15px; color: var(--text-secondary);" id="issue-date">2026.04.04</div>
+    <!-- 主内容 -->
+    <div class="main-content" id="main-content">
+        <!-- 动态生成 -->
+    </div>
+    
+    <!-- 详情页 -->
+    <div class="detail-page" id="detail-page">
+        <div class="detail-header">
+            <div class="detail-bg" id="detail-bg"></div>
+            <div class="detail-overlay"></div>
+            <div class="detail-nav">
+                <button class="back-btn" onclick="closeDetail()">←</button>
+            </div>
+            <div class="detail-content">
+                <img class="detail-cover" id="detail-cover" src="" alt="">
+                <div class="detail-info">
+                    <div class="detail-mag-name" id="detail-mag-name">The Economist</div>
+                    <div class="detail-issue-date" id="detail-issue-date">2026.04.04</div>
+                    <div class="detail-issue-sub" id="detail-issue-sub">2026年4月4日</div>
                 </div>
             </div>
         </div>
         
-        <div class="info-card">
-            <div class="info-title">💡 阅读提示</div>
-            <div class="info-text">
-                点击下方的下载按钮获取期刊文件，建议使用以下App打开：<br>
-                • PDF：系统自带图书App或Adobe Acrobat<br>
-                • EPUB：Apple Books、KyBook<br>
-                • MOBI：Kindle App
+        <div class="tip-card">
+            <div class="tip-title">💡 阅读建议</div>
+            <div class="tip-text">
+                PDF 适合打印和精确排版阅读<br>
+                EPUB 适合 Apple Books、KyBook 等阅读器<br>
+                MOBI 适合 Kindle 设备
             </div>
         </div>
         
-        <div class="card">
+        <div class="download-section">
             <div class="download-title">选择格式下载</div>
-            <div class="download-buttons" id="download-buttons"></div>
-        </div>
-        
-        <div class="card">
-            <div class="download-title">在线查看</div>
-            <a href="#" class="download-btn primary" id="github-link" target="_blank" style="display: block; text-align: center; margin-top: 10px;">
-                在 GitHub 上查看
+            <div class="download-grid">
+                <a href="#" class="download-option" id="dl-pdf" target="_blank">
+                    <div class="download-icon">📄</div>
+                    <div class="download-label">PDF</div>
+                    <div class="download-format">标准格式</div>
+                </a>
+                <a href="#" class="download-option" id="dl-epub" target="_blank">
+                    <div class="download-icon">📖</div>
+                    <div class="download-label">EPUB</div>
+                    <div class="download-format">电子书</div>
+                </a>
+                <a href="#" class="download-option" id="dl-mobi" target="_blank">
+                    <div class="download-icon">📚</div>
+                    <div class="download-label">MOBI</div>
+                    <div class="download-format">Kindle</div>
+                </a>
+            </div>
+            <a href="#" class="github-btn" id="github-link" target="_blank">
+                <span>🔗</span>
+                <span>在 GitHub 上查看源文件</span>
             </a>
-        </div>
-    </div>
-    
-    <!-- 我的页面 -->
-    <div id="page-profile" class="page">
-        <div class="nav-header">
-            <div class="nav-title">我的</div>
-        </div>
-        
-        <div class="card">
-            <div style="display: flex; align-items: center; padding: 8px 0;">
-                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white;">👤</div>
-                <div style="margin-left: 16px;">
-                    <div style="font-size: 18px; font-weight: 600;">英语期刊读者</div>
-                    <div style="font-size: 14px; color: var(--text-secondary); margin-top: 4px;">数据来源：hehonghui/awesome-english-ebooks</div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="section-title">关于</div>
-        <div class="card">
-            <div style="font-size: 14px; line-height: 1.8; color: var(--text-secondary);">
-                <p style="margin-bottom: 12px;">本应用数据来源于开源项目 awesome-english-ebooks，仅供学习交流使用。</p>
-                <p>包含 The Economist、The New Yorker、The Atlantic、WIRED 四种期刊，每周更新。</p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- 底部导航 -->
-    <div class="tab-bar">
-        <div class="tab-item active" onclick="switchTab('home')">
-            <div class="tab-icon">📚</div>
-            <div class="tab-label">期刊</div>
-        </div>
-        <div class="tab-item" onclick="switchTab('profile')">
-            <div class="tab-icon">👤</div>
-            <div class="tab-label">我的</div>
         </div>
     </div>
 
     <script>
-        // 期刊数据 - 每个期刊只保留最近5期
+        // 期刊数据
         const magazines = {
             economist: {
                 name: 'The Economist',
-                icon: '📰',
-                class: 'economist',
+                nameCN: '经济学人',
+                color: '#e3120b',
+                folder: '01_economist',
+                filePrefix: 'TheEconomist',
                 issues: [
-                    { id: 'te_2026.04.04', date: '2026年4月4日', dateShort: '2026.04.04', folder: 'te_2026.04.04' },
-                    { id: 'te_2026.03.28', date: '2026年3月28日', dateShort: '2026.03.28', folder: 'te_2026.03.28' },
-                    { id: 'te_2026.03.21', date: '2026年3月21日', dateShort: '2026.03.21', folder: 'te_2026.03.21' },
-                    { id: 'te_2026.03.14', date: '2026年3月14日', dateShort: '2026.03.14', folder: 'te_2026.03.14' },
-                    { id: 'te_2026.03.07', date: '2026年3月7日', dateShort: '2026.03.07', folder: 'te_2026.03.07' }
+                    { date: '2026.04.04', dateCN: '2026年4月4日', folder: 'te_2026.04.04' },
+                    { date: '2026.03.28', dateCN: '2026年3月28日', folder: 'te_2026.03.28' },
+                    { date: '2026.03.21', dateCN: '2026年3月21日', folder: 'te_2026.03.21' },
+                    { date: '2026.03.14', dateCN: '2026年3月14日', folder: 'te_2026.03.14' },
+                    { date: '2026.03.07', dateCN: '2026年3月7日', folder: 'te_2026.03.07' }
                 ]
             },
             nyorker: {
                 name: 'The New Yorker',
-                icon: '🗽',
-                class: 'nyorker',
+                nameCN: '纽约客',
+                color: '#000000',
+                folder: '02_new_yorker',
+                filePrefix: 'TheNewYorker',
                 issues: [
-                    { id: 'ny_2026.04.06', date: '2026年4月6日', dateShort: '2026.04.06', folder: '2026.04.06' },
-                    { id: 'ny_2026.03.30', date: '2026年3月30日', dateShort: '2026.03.30', folder: '2026.03.30' },
-                    { id: 'ny_2026.03.23', date: '2026年3月23日', dateShort: '2026.03.23', folder: '2026.03.23' },
-                    { id: 'ny_2026.03.16', date: '2026年3月16日', dateShort: '2026.03.16', folder: '2026.03.16' },
-                    { id: 'ny_2026.03.09', date: '2026年3月9日', dateShort: '2026.03.09', folder: '2026.03.09' }
+                    { date: '2026.04.06', dateCN: '2026年4月6日', folder: '2026.04.06' },
+                    { date: '2026.03.30', dateCN: '2026年3月30日', folder: '2026.03.30' },
+                    { date: '2026.03.23', dateCN: '2026年3月23日', folder: '2026.03.23' },
+                    { date: '2026.03.16', dateCN: '2026年3月16日', folder: '2026.03.16' },
+                    { date: '2026.03.09', dateCN: '2026年3月9日', folder: '2026.03.09' }
                 ]
             },
             atlantic: {
                 name: 'The Atlantic',
-                icon: '🌊',
-                class: 'atlantic',
+                nameCN: '大西洋月刊',
+                color: '#003366',
+                folder: '04_atlantic',
+                filePrefix: 'TheAtlantic',
                 issues: [
-                    { id: 'at_2026.04.02', date: '2026年4月', dateShort: '2026.04', folder: '2026.04.02' },
-                    { id: 'at_2026.03.02', date: '2026年3月', dateShort: '2026.03', folder: '2026.03.02' },
-                    { id: 'at_2026.02.02', date: '2026年2月', dateShort: '2026.02', folder: '2026.02.02' },
-                    { id: 'at_2026.01.02', date: '2026年1月', dateShort: '2026.01', folder: '2026.01.02' },
-                    { id: 'at_2025.12.02', date: '2025年12月', dateShort: '2025.12', folder: '2025.12.02' }
+                    { date: '2026.04', dateCN: '2026年4月刊', folder: '2026.04.02' },
+                    { date: '2026.03', dateCN: '2026年3月刊', folder: '2026.03.02' },
+                    { date: '2026.02', dateCN: '2026年2月刊', folder: '2026.02.02' },
+                    { date: '2026.01', dateCN: '2026年1月刊', folder: '2026.01.02' },
+                    { date: '2025.12', dateCN: '2025年12月刊', folder: '2025.12.02' }
                 ]
             },
             wired: {
                 name: 'WIRED',
-                icon: '⚡',
-                class: 'wired',
+                nameCN: '连线',
+                color: '#000000',
+                folder: '05_wired',
+                filePrefix: 'Wired',
                 issues: [
-                    { id: 'wi_2026.04.02', date: '2026年4月', dateShort: '2026.04', folder: '2026.04.02' },
-                    { id: 'wi_2026.03.02', date: '2026年3月', dateShort: '2026.03', folder: '2026.03.02' },
-                    { id: 'wi_2026.02.02', date: '2026年2月', dateShort: '2026.02', folder: '2026.02.02' },
-                    { id: 'wi_2026.01.02', date: '2026年1月', dateShort: '2026.01', folder: '2026.01.02' },
-                    { id: 'wi_2025.12.02', date: '2025年12月', dateShort: '2025.12', folder: '2025.12.02' }
+                    { date: '2026.04', dateCN: '2026年4月刊', folder: '2026.04.02' },
+                    { date: '2026.03', dateCN: '2026年3月刊', folder: '2026.03.02' },
+                    { date: '2026.02', dateCN: '2026年2月刊', folder: '2026.02.02' },
+                    { date: '2026.01', dateCN: '2026年1月刊', folder: '2026.01.02' },
+                    { date: '2025.12', dateCN: '2025年12月刊', folder: '2025.12.02' }
                 ]
             }
         };
-
+        
+        let currentMag = 'economist';
+        
+        // 生成封面URL（使用GitHub缩略图或默认封面）
+        function getCoverUrl(magKey, issue) {
+            const mag = magazines[magKey];
+            // 使用GitHub raw链接作为封面
+            return `https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master/${mag.folder}/${issue.folder}/${mag.filePrefix}.${issue.date}.jpg`;
+        }
+        
         // 生成下载链接
-        function generateLinks(magKey, issue) {
+        function getDownloadLinks(magKey, issue) {
+            const mag = magazines[magKey];
             const baseUrl = 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master';
-            const githubBase = 'https://github.com/hehonghui/awesome-english-ebooks/tree/master';
-            
-            let folder, fileName, githubFolder;
-            
-            switch(magKey) {
-                case 'economist':
-                    folder = `01_economist/${issue.folder}`;
-                    fileName = `TheEconomist.${issue.dateShort}`;
-                    githubFolder = folder;
-                    break;
-                case 'nyorker':
-                    folder = `02_new_yorker/${issue.folder}`;
-                    fileName = `TheNewYorker.${issue.dateShort}`;
-                    githubFolder = folder;
-                    break;
-                case 'atlantic':
-                    folder = `04_atlantic/${issue.folder}`;
-                    fileName = `TheAtlantic.${issue.dateShort}`;
-                    githubFolder = folder;
-                    break;
-                case 'wired':
-                    folder = `05_wired/${issue.folder}`;
-                    fileName = `Wired.${issue.dateShort}`;
-                    githubFolder = folder;
-                    break;
-            }
+            const folder = `${mag.folder}/${issue.folder}`;
+            const fileName = `${mag.filePrefix}.${issue.date}`;
             
             return {
                 pdf: `${baseUrl}/${folder}/${fileName}.pdf`,
                 epub: `${baseUrl}/${folder}/${fileName}.epub`,
                 mobi: `${baseUrl}/${folder}/${fileName}.mobi`,
-                github: `${githubBase}/${githubFolder}`
+                github: `https://github.com/hehonghui/awesome-english-ebooks/tree/master/${folder}`
             };
         }
         
-        let currentIssue = null;
-        let currentMag = null;
-        
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
-            renderAllIssues();
+            renderMagazine(currentMag);
         });
         
-        // 渲染所有期刊列表
-        function renderAllIssues() {
-            Object.keys(magazines).forEach(key => {
-                const mag = magazines[key];
-                const list = document.getElementById(`${key}-list`);
-                list.innerHTML = mag.issues.map(issue => `
-                    <div class="issue-item" onclick="openIssue('${key}', '${issue.id}')">
-                        <div class="issue-cover ${mag.class}">${mag.icon}</div>
-                        <div class="issue-info">
-                            <div class="issue-name">${mag.name}</div>
-                            <div class="issue-meta">${issue.date}</div>
-                        </div>
-                        <div class="issue-arrow">›</div>
-                    </div>
-                `).join('');
+        // 切换期刊
+        function switchMag(magKey) {
+            currentMag = magKey;
+            
+            // 更新标签状态
+            document.querySelectorAll('.mag-tab').forEach((tab, index) => {
+                const keys = Object.keys(magazines);
+                tab.classList.toggle('active', keys[index] === magKey);
             });
+            
+            renderMagazine(magKey);
         }
         
-        // 切换页面
-        function showPage(pageName) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(`page-${pageName}`).classList.add('active');
+        // 渲染期刊页面
+        function renderMagazine(magKey) {
+            const mag = magazines[magKey];
+            const latest = mag.issues[0];
+            const coverUrl = getCoverUrl(magKey, latest);
+            const links = getDownloadLinks(magKey, latest);
             
-            if (pageName === 'home') {
-                document.querySelectorAll('.tab-item').forEach((t, i) => {
-                    t.classList.toggle('active', i === 0);
-                });
-            } else if (pageName === 'profile') {
-                document.querySelectorAll('.tab-item').forEach((t, i) => {
-                    t.classList.toggle('active', i === 1);
-                });
-            }
+            const html = `
+                <!-- 头部大图 -->
+                <div class="magazine-hero">
+                    <div class="magazine-hero-bg" style="background-image: url('${coverUrl}')"></div>
+                    <div class="magazine-hero-overlay"></div>
+                    <div class="magazine-hero-content">
+                        <img class="hero-cover" src="${coverUrl}" alt="${mag.name}" onerror="this.style.display='none'">
+                        <div class="hero-info">
+                            <div class="hero-title">${mag.name}</div>
+                            <div class="hero-subtitle">最新一期 · ${latest.dateCN}</div>
+                            <button class="hero-btn" onclick="openDetail('${magKey}', 0)">
+                                <span>📥</span>
+                                <span>立即下载</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 近期期刊 -->
+                <div class="section-title">
+                    近期期刊
+                    <span>共 ${mag.issues.length} 期</span>
+                </div>
+                <div class="cover-scroll">
+                    ${mag.issues.map((issue, index) => `
+                        <div class="cover-item" onclick="openDetail('${magKey}', ${index})">
+                            <img class="cover-image" src="${getCoverUrl(magKey, issue)}" alt="${issue.date}" onerror="this.style.background='linear-gradient(135deg, ${mag.color} 0%, #1a1a2e 100%)'">
+                            <div class="cover-date">${issue.dateCN}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.getElementById('main-content').innerHTML = html;
         }
         
-        // 切换底部标签
-        function switchTab(tabName) {
-            if (tabName === 'home') {
-                showPage('home');
-            } else if (tabName === 'profile') {
-                showPage('profile');
-            }
-        }
-        
-        // 打开特定期刊
-        function openIssue(magKey, issueId) {
-            currentMag = magazines[magKey];
-            currentIssue = currentMag.issues.find(i => i.id === issueId);
-            if (!currentIssue) return;
+        // 打开详情页
+        function openDetail(magKey, issueIndex) {
+            const mag = magazines[magKey];
+            const issue = mag.issues[issueIndex];
+            const coverUrl = getCoverUrl(magKey, issue);
+            const links = getDownloadLinks(magKey, issue);
             
-            const links = generateLinks(magKey, currentIssue);
+            // 设置详情页内容
+            document.getElementById('detail-bg').style.backgroundImage = `url('${coverUrl}')`;
+            document.getElementById('detail-cover').src = coverUrl;
+            document.getElementById('detail-mag-name').textContent = mag.name;
+            document.getElementById('detail-mag-name').style.color = mag.color;
+            document.getElementById('detail-issue-date').textContent = issue.date;
+            document.getElementById('detail-issue-sub').textContent = issue.dateCN;
             
-            // 更新期刊详情页
-            document.getElementById('issue-detail-title').textContent = currentIssue.dateShort;
-            document.getElementById('issue-title').textContent = currentMag.name;
-            document.getElementById('issue-date').textContent = currentIssue.date;
+            // 设置下载链接
+            document.getElementById('dl-pdf').href = links.pdf;
+            document.getElementById('dl-epub').href = links.epub;
+            document.getElementById('dl-mobi').href = links.mobi;
             document.getElementById('github-link').href = links.github;
             
-            // 更新封面样式
-            const cover = document.getElementById('detail-cover');
-            cover.className = `issue-cover ${currentMag.class}`;
-            cover.textContent = currentMag.icon;
-            
-            // 生成下载按钮
-            const buttonsHtml = `
-                <a href="${links.pdf}" class="download-btn primary" download target="_blank">PDF</a>
-                <a href="${links.epub}" class="download-btn" download target="_blank">EPUB</a>
-                <a href="${links.mobi}" class="download-btn" download target="_blank">MOBI</a>
-            `;
-            document.getElementById('download-buttons').innerHTML = buttonsHtml;
-            
-            // 显示期刊详情页
-            showPage('issue');
+            // 显示详情页
+            document.getElementById('detail-page').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // 关闭详情页
+        function closeDetail() {
+            document.getElementById('detail-page').classList.remove('active');
+            document.body.style.overflow = '';
         }
     </script>
 </body>
