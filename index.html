@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="英语期刊">
-    <meta name="theme-color" content="#1a1a2e">
+    <meta name="theme-color" content="#f5f5f7">
     <title>英语期刊 - English Magazines</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
@@ -19,12 +19,11 @@
         
         :root {
             --primary: #e3120b;
-            --bg: #0f0f1a;
-            --card: #1a1a2e;
-            --card-light: #252542;
-            --text: #ffffff;
-            --text-secondary: #a0a0b0;
-            --border: #2a2a40;
+            --bg: #f5f5f7;
+            --card: #ffffff;
+            --text: #1d1d1f;
+            --text-secondary: #86868b;
+            --border: #d2d2d7;
         }
         
         body {
@@ -32,7 +31,7 @@
             background: var(--bg);
             min-height: 100vh;
             padding-top: env(safe-area-inset-top);
-            padding-bottom: calc(80px + env(safe-area-inset-bottom));
+            padding-bottom: calc(20px + env(safe-area-inset-bottom));
             color: var(--text);
         }
         
@@ -42,11 +41,12 @@
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(15, 15, 26, 0.95);
+            background: rgba(245, 245, 247, 0.95);
             backdrop-filter: blur(20px);
             z-index: 1000;
             padding: 12px 16px;
             padding-top: calc(12px + env(safe-area-inset-top));
+            border-bottom: 1px solid var(--border);
         }
         
         .top-nav-title {
@@ -91,16 +91,17 @@
         /* 主内容区 */
         .main-content {
             padding-top: calc(100px + env(safe-area-inset-top));
+            padding-bottom: 20px;
         }
         
         /* 期刊头部大图 */
         .magazine-hero {
             position: relative;
-            height: 280px;
-            margin: 0 16px 20px;
+            margin: 0 16px 24px;
             border-radius: 20px;
             overflow: hidden;
-            background: linear-gradient(135deg, var(--card) 0%, var(--card-light) 100%);
+            background: var(--card);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
         
         .magazine-hero-bg {
@@ -111,8 +112,8 @@
             bottom: 0;
             background-size: cover;
             background-position: center;
-            opacity: 0.5;
-            filter: blur(20px);
+            opacity: 0.3;
+            filter: blur(30px);
         }
         
         .magazine-hero-overlay {
@@ -121,32 +122,29 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(to bottom, rgba(15,15,26,0.2) 0%, rgba(15,15,26,0.9) 100%);
+            background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.95) 100%);
         }
         
         .magazine-hero-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            position: relative;
             padding: 24px;
             display: flex;
-            align-items: flex-end;
-            gap: 16px;
+            align-items: center;
+            gap: 20px;
         }
         
         .hero-cover {
-            width: 100px;
-            height: 130px;
-            border-radius: 8px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            width: 120px;
+            height: 156px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
             object-fit: cover;
             flex-shrink: 0;
-            background: linear-gradient(135deg, var(--card-light) 0%, var(--card) 100%);
+            background: linear-gradient(135deg, #e0e0e5 0%, #c0c0c8 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
+            font-size: 48px;
             overflow: hidden;
         }
         
@@ -158,19 +156,18 @@
         
         .hero-info {
             flex: 1;
-            padding-bottom: 4px;
         }
         
         .hero-title {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
         
         .hero-subtitle {
             font-size: 14px;
             color: var(--text-secondary);
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
         
         .hero-btn {
@@ -179,9 +176,9 @@
             gap: 6px;
             background: var(--primary);
             color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 14px;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             border: none;
@@ -203,55 +200,70 @@
             font-weight: 500;
         }
         
-        /* 横向滚动封面列表 */
-        .cover-scroll {
+        /* 纵向列表 */
+        .issue-list {
             display: flex;
+            flex-direction: column;
             gap: 12px;
-            overflow-x: auto;
-            padding: 0 16px 20px;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
+            padding: 0 16px;
         }
         
-        .cover-scroll::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .cover-item {
-            flex-shrink: 0;
-            width: 120px;
+        .issue-item {
+            display: flex;
+            align-items: center;
+            background: var(--card);
+            border-radius: 16px;
+            padding: 16px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
         }
         
-        .cover-item:active {
-            transform: scale(0.95);
+        .issue-item:active {
+            transform: scale(0.98);
+            background: #f8f8fa;
         }
         
-        .cover-image {
-            width: 120px;
-            height: 156px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, var(--card-light) 0%, var(--card) 100%);
+        .issue-cover {
+            width: 70px;
+            height: 90px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            object-fit: cover;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #e0e0e5 0%, #c0c0c8 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 36px;
+            font-size: 28px;
             overflow: hidden;
+            margin-right: 16px;
         }
         
-        .cover-image canvas {
+        .issue-cover canvas {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
         
-        .cover-date {
-            font-size: 13px;
+        .issue-info {
+            flex: 1;
+        }
+        
+        .issue-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .issue-meta {
+            font-size: 14px;
             color: var(--text-secondary);
-            text-align: center;
+        }
+        
+        .issue-arrow {
+            font-size: 20px;
+            color: var(--text-secondary);
         }
         
         /* 详情页 */
@@ -274,8 +286,10 @@
         
         .detail-header {
             position: relative;
-            height: 320px;
-            background: linear-gradient(135deg, var(--card) 0%, var(--card-light) 100%);
+            background: var(--card);
+            padding-bottom: 24px;
+            border-radius: 0 0 24px 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
         
         .detail-bg {
@@ -283,10 +297,10 @@
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
+            height: 200px;
             background-size: cover;
             background-position: center;
-            opacity: 0.3;
+            opacity: 0.2;
             filter: blur(30px);
         }
         
@@ -295,28 +309,23 @@
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: linear-gradient(to bottom, rgba(15,15,26,0.2) 0%, rgba(15,15,26,1) 100%);
+            height: 200px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,1) 100%);
         }
         
         .detail-nav {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            position: relative;
             padding: 16px;
             padding-top: calc(16px + env(safe-area-inset-top));
             display: flex;
             align-items: center;
-            justify-content: space-between;
             z-index: 10;
         }
         
         .back-btn {
             width: 40px;
             height: 40px;
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.05);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -324,33 +333,31 @@
             font-size: 20px;
             cursor: pointer;
             border: none;
-            color: white;
+            color: var(--text);
         }
         
         .detail-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 24px;
+            position: relative;
+            padding: 0 24px;
             display: flex;
-            gap: 20px;
-            align-items: flex-end;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
         
         .detail-cover {
-            width: 120px;
-            height: 156px;
-            border-radius: 10px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            width: 160px;
+            height: 208px;
+            border-radius: 12px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
             object-fit: cover;
-            flex-shrink: 0;
-            background: linear-gradient(135deg, var(--card-light) 0%, var(--card) 100%);
+            background: linear-gradient(135deg, #e0e0e5 0%, #c0c0c8 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
+            font-size: 64px;
             overflow: hidden;
+            margin-bottom: 20px;
         }
         
         .detail-cover canvas {
@@ -359,28 +366,23 @@
             object-fit: cover;
         }
         
-        .detail-info {
-            flex: 1;
-            padding-bottom: 8px;
-        }
-        
         .detail-mag-name {
             font-size: 14px;
             color: var(--primary);
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
         
         .detail-issue-date {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
         
         .detail-issue-sub {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-secondary);
         }
         
@@ -412,11 +414,12 @@
             text-decoration: none;
             color: var(--text);
             border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         
         .download-option:active {
             transform: scale(0.95);
-            background: var(--card-light);
+            background: #f8f8fa;
         }
         
         .download-icon {
@@ -450,6 +453,7 @@
             cursor: pointer;
             text-decoration: none;
             width: 100%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         
         /* 提示卡片 */
@@ -459,6 +463,7 @@
             padding: 20px;
             margin: 0 24px 24px;
             border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         
         .tip-title {
@@ -524,11 +529,9 @@
                 <div class="detail-cover" id="detail-cover">
                     <div class="loading">📰</div>
                 </div>
-                <div class="detail-info">
-                    <div class="detail-mag-name" id="detail-mag-name">The Economist</div>
-                    <div class="detail-issue-date" id="detail-issue-date">2026.04.04</div>
-                    <div class="detail-issue-sub" id="detail-issue-sub">2026年4月4日</div>
-                </div>
+                <div class="detail-mag-name" id="detail-mag-name">The Economist</div>
+                <div class="detail-issue-date" id="detail-issue-date">2026.04.04</div>
+                <div class="detail-issue-sub" id="detail-issue-sub">2026年4月4日</div>
             </div>
         </div>
         
@@ -673,7 +676,6 @@
                     viewport: viewport
                 }).promise;
                 
-                // 缓存封面数据
                 coverCache.set(pdfUrl, canvas.toDataURL());
                 
             } catch (error) {
@@ -708,6 +710,7 @@
             const html = `
                 <!-- 头部区域 -->
                 <div class="magazine-hero">
+                    <div class="magazine-hero-bg" id="hero-bg"></div>
                     <div class="magazine-hero-overlay"></div>
                     <div class="magazine-hero-content">
                         <div class="hero-cover" id="hero-cover-container">
@@ -724,18 +727,22 @@
                     </div>
                 </div>
                 
-                <!-- 近期期刊 -->
+                <!-- 近期期刊 - 纵向列表 -->
                 <div class="section-title">
                     近期期刊
                     <span>共 ${mag.issues.length} 期</span>
                 </div>
-                <div class="cover-scroll">
+                <div class="issue-list">
                     ${mag.issues.map((issue, index) => `
-                        <div class="cover-item" onclick="openDetail('${magKey}', ${index})">
-                            <div class="cover-image">
+                        <div class="issue-item" onclick="openDetail('${magKey}', ${index})">
+                            <div class="issue-cover">
                                 <canvas id="cover-${magKey}-${index}"></canvas>
                             </div>
-                            <div class="cover-date">${issue.dateCN}</div>
+                            <div class="issue-info">
+                                <div class="issue-name">${mag.name}</div>
+                                <div class="issue-meta">${issue.dateCN}</div>
+                            </div>
+                            <div class="issue-arrow">›</div>
                         </div>
                     `).join('')}
                 </div>
@@ -745,10 +752,8 @@
             
             // 异步加载封面
             setTimeout(() => {
-                // 加载主封面
                 extractCover(links.pdf, heroCanvasId);
                 
-                // 加载列表封面
                 mag.issues.forEach((issue, index) => {
                     const issueLinks = getDownloadLinks(magKey, issue);
                     extractCover(issueLinks.pdf, `cover-${magKey}-${index}`);
@@ -763,24 +768,20 @@
             const links = getDownloadLinks(magKey, issue);
             const detailCanvasId = 'detail-cover-canvas';
             
-            // 设置详情页内容
             document.getElementById('detail-cover').innerHTML = `<canvas id="${detailCanvasId}"></canvas>`;
             document.getElementById('detail-mag-name').textContent = mag.name;
             document.getElementById('detail-mag-name').style.color = mag.color;
             document.getElementById('detail-issue-date').textContent = issue.date;
             document.getElementById('detail-issue-sub').textContent = issue.dateCN;
             
-            // 设置下载链接
             document.getElementById('dl-pdf').href = links.pdf;
             document.getElementById('dl-epub').href = links.epub;
             document.getElementById('dl-mobi').href = links.mobi;
             document.getElementById('github-link').href = links.github;
             
-            // 显示详情页
             document.getElementById('detail-page').classList.add('active');
             document.body.style.overflow = 'hidden';
             
-            // 加载详情封面
             setTimeout(() => {
                 extractCover(links.pdf, detailCanvasId);
             }, 100);
