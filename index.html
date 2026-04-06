@@ -614,11 +614,11 @@
                 folder: '04_atlantic',
                 filePrefix: 'TheAtlantic',
                 issues: [
-                    { date: '2026.04', dateCN: '2026年4月刊', folder: '2026.04.02' },
-                    { date: '2026.03', dateCN: '2026年3月刊', folder: '2026.03.02' },
-                    { date: '2026.02', dateCN: '2026年2月刊', folder: '2026.02.02' },
-                    { date: '2026.01', dateCN: '2026年1月刊', folder: '2026.01.02' },
-                    { date: '2025.12', dateCN: '2025年12月刊', folder: '2025.12.02' }
+                    { date: '2026.04', dateCN: '2026年4月刊', folder: '2026.04.02', fileDate: '2026.04' },
+                    { date: '2026.03', dateCN: '2026年3月刊', folder: '2026.03.02', fileDate: '2026.03' },
+                    { date: '2026.02', dateCN: '2026年2月刊', folder: '2026.02.02', fileDate: '2026.02' },
+                    { date: '2026.01', dateCN: '2026年1月刊', folder: '2026.01.02', fileDate: '2026.01' },
+                    { date: '2025.12', dateCN: '2025年12月刊', folder: '2025.12.02', fileDate: '2025.12' }
                 ]
             },
             wired: {
@@ -629,11 +629,11 @@
                 folder: '05_wired',
                 filePrefix: 'Wired',
                 issues: [
-                    { date: '2026.04', dateCN: '2026年4月刊', folder: '2026.04.02' },
-                    { date: '2026.03', dateCN: '2026年3月刊', folder: '2026.03.02' },
-                    { date: '2026.02', dateCN: '2026年2月刊', folder: '2026.02.02' },
-                    { date: '2026.01', dateCN: '2026年1月刊', folder: '2026.01.02' },
-                    { date: '2025.12', dateCN: '2025年12月刊', folder: '2025.12.02' }
+                    { date: '2026.04', dateCN: '2026年4月刊', folder: '2026.04.02', fileDate: '2026.04' },
+                    { date: '2026.03', dateCN: '2026年3月刊', folder: '2026.03.02', fileDate: '2026.03' },
+                    { date: '2026.02', dateCN: '2026年2月刊', folder: '2026.02.02', fileDate: '2026.02' },
+                    { date: '2026.01', dateCN: '2026年1月刊', folder: '2026.01.02', fileDate: '2026.01' },
+                    { date: '2025.12', dateCN: '2025年12月刊', folder: '2025.12.02', fileDate: '2025.12' }
                 ]
             }
         };
@@ -646,7 +646,9 @@
             const mag = magazines[magKey];
             const baseUrl = 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master';
             const folder = `${mag.folder}/${issue.folder}`;
-            const fileName = `${mag.filePrefix}.${issue.date}`;
+            // 使用 fileDate 如果存在，否则使用 date
+            const fileDate = issue.fileDate || issue.date;
+            const fileName = `${mag.filePrefix}.${fileDate}`;
             
             return {
                 pdf: `${baseUrl}/${folder}/${fileName}.pdf`,
