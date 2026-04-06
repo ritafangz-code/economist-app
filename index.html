@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="英语期刊">
     <meta name="theme-color" content="#1a1a2e">
     <title>英语期刊 - English Magazines</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -110,7 +111,8 @@
             bottom: 0;
             background-size: cover;
             background-position: center;
-            opacity: 0.6;
+            opacity: 0.5;
+            filter: blur(20px);
         }
         
         .magazine-hero-overlay {
@@ -119,7 +121,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(to bottom, rgba(15,15,26,0.3) 0%, rgba(15,15,26,0.95) 100%);
+            background: linear-gradient(to bottom, rgba(15,15,26,0.2) 0%, rgba(15,15,26,0.9) 100%);
         }
         
         .magazine-hero-content {
@@ -145,6 +147,13 @@
             align-items: center;
             justify-content: center;
             font-size: 40px;
+            overflow: hidden;
+        }
+        
+        .hero-cover canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .hero-info {
@@ -223,7 +232,6 @@
             width: 120px;
             height: 156px;
             border-radius: 12px;
-            object-fit: cover;
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
             margin-bottom: 10px;
             background: linear-gradient(135deg, var(--card-light) 0%, var(--card) 100%);
@@ -231,6 +239,13 @@
             align-items: center;
             justify-content: center;
             font-size: 36px;
+            overflow: hidden;
+        }
+        
+        .cover-image canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .cover-date {
@@ -271,7 +286,8 @@
             bottom: 0;
             background-size: cover;
             background-position: center;
-            opacity: 0.4;
+            opacity: 0.3;
+            filter: blur(30px);
         }
         
         .detail-overlay {
@@ -280,7 +296,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(to bottom, rgba(15,15,26,0.3) 0%, rgba(15,15,26,1) 100%);
+            background: linear-gradient(to bottom, rgba(15,15,26,0.2) 0%, rgba(15,15,26,1) 100%);
         }
         
         .detail-nav {
@@ -334,6 +350,13 @@
             align-items: center;
             justify-content: center;
             font-size: 48px;
+            overflow: hidden;
+        }
+        
+        .detail-cover canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .detail-info {
@@ -454,6 +477,20 @@
             line-height: 1.6;
         }
         
+        /* 加载状态 */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
         /* 隐藏 */
         .hidden { display: none !important; }
     </style>
@@ -484,7 +521,9 @@
                 <button class="back-btn" onclick="closeDetail()">←</button>
             </div>
             <div class="detail-content">
-                <div class="detail-cover" id="detail-cover">📰</div>
+                <div class="detail-cover" id="detail-cover">
+                    <div class="loading">📰</div>
+                </div>
                 <div class="detail-info">
                     <div class="detail-mag-name" id="detail-mag-name">The Economist</div>
                     <div class="detail-issue-date" id="detail-issue-date">2026.04.04</div>
@@ -529,6 +568,9 @@
     </div>
 
     <script>
+        // 设置PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        
         // 期刊数据
         const magazines = {
             economist: {
@@ -594,6 +636,7 @@
         };
         
         let currentMag = 'economist';
+        const coverCache = new Map();
         
         // 生成下载链接
         function getDownloadLinks(magKey, issue) {
@@ -610,6 +653,34 @@
             };
         }
         
+        // 从PDF提取封面
+        async function extractCover(pdfUrl, canvasId) {
+            try {
+                const loadingTask = pdfjsLib.getDocument(pdfUrl);
+                const pdf = await loadingTask.promise;
+                const page = await pdf.getPage(1);
+                
+                const viewport = page.getViewport({ scale: 0.5 });
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) return;
+                
+                const context = canvas.getContext('2d');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                
+                await page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                }).promise;
+                
+                // 缓存封面数据
+                coverCache.set(pdfUrl, canvas.toDataURL());
+                
+            } catch (error) {
+                console.log('封面提取失败:', error);
+            }
+        }
+        
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
             renderMagazine(currentMag);
@@ -619,7 +690,6 @@
         function switchMag(magKey) {
             currentMag = magKey;
             
-            // 更新标签状态
             document.querySelectorAll('.mag-tab').forEach((tab, index) => {
                 const keys = Object.keys(magazines);
                 tab.classList.toggle('active', keys[index] === magKey);
@@ -633,13 +703,16 @@
             const mag = magazines[magKey];
             const latest = mag.issues[0];
             const links = getDownloadLinks(magKey, latest);
+            const heroCanvasId = `hero-cover-${magKey}`;
             
             const html = `
                 <!-- 头部区域 -->
                 <div class="magazine-hero">
                     <div class="magazine-hero-overlay"></div>
                     <div class="magazine-hero-content">
-                        <div class="hero-cover">${mag.icon}</div>
+                        <div class="hero-cover" id="hero-cover-container">
+                            <canvas id="${heroCanvasId}"></canvas>
+                        </div>
                         <div class="hero-info">
                             <div class="hero-title">${mag.name}</div>
                             <div class="hero-subtitle">最新一期 · ${latest.dateCN}</div>
@@ -659,7 +732,9 @@
                 <div class="cover-scroll">
                     ${mag.issues.map((issue, index) => `
                         <div class="cover-item" onclick="openDetail('${magKey}', ${index})">
-                            <div class="cover-image">${mag.icon}</div>
+                            <div class="cover-image">
+                                <canvas id="cover-${magKey}-${index}"></canvas>
+                            </div>
                             <div class="cover-date">${issue.dateCN}</div>
                         </div>
                     `).join('')}
@@ -667,6 +742,18 @@
             `;
             
             document.getElementById('main-content').innerHTML = html;
+            
+            // 异步加载封面
+            setTimeout(() => {
+                // 加载主封面
+                extractCover(links.pdf, heroCanvasId);
+                
+                // 加载列表封面
+                mag.issues.forEach((issue, index) => {
+                    const issueLinks = getDownloadLinks(magKey, issue);
+                    extractCover(issueLinks.pdf, `cover-${magKey}-${index}`);
+                });
+            }, 100);
         }
         
         // 打开详情页
@@ -674,9 +761,10 @@
             const mag = magazines[magKey];
             const issue = mag.issues[issueIndex];
             const links = getDownloadLinks(magKey, issue);
+            const detailCanvasId = 'detail-cover-canvas';
             
             // 设置详情页内容
-            document.getElementById('detail-cover').textContent = mag.icon;
+            document.getElementById('detail-cover').innerHTML = `<canvas id="${detailCanvasId}"></canvas>`;
             document.getElementById('detail-mag-name').textContent = mag.name;
             document.getElementById('detail-mag-name').style.color = mag.color;
             document.getElementById('detail-issue-date').textContent = issue.date;
@@ -691,6 +779,11 @@
             // 显示详情页
             document.getElementById('detail-page').classList.add('active');
             document.body.style.overflow = 'hidden';
+            
+            // 加载详情封面
+            setTimeout(() => {
+                extractCover(links.pdf, detailCanvasId);
+            }, 100);
         }
         
         // 关闭详情页
