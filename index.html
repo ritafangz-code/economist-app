@@ -213,7 +213,7 @@
             align-items: center;
             background: var(--card);
             border-radius: 16px;
-            padding: 16px;
+            padding: 18px 20px;
             cursor: pointer;
             transition: all 0.2s;
             box-shadow: 0 2px 12px rgba(0,0,0,0.06);
@@ -251,13 +251,13 @@
         }
         
         .issue-name {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
         
         .issue-meta {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-secondary);
         }
         
@@ -729,7 +729,7 @@
                     </div>
                 </div>
                 
-                <!-- 近期期刊 - 纵向列表 -->
+                <!-- 近期期刊 - 纵向列表（无封面） -->
                 <div class="section-title">
                     近期期刊
                     <span>共 ${mag.issues.length} 期</span>
@@ -737,9 +737,6 @@
                 <div class="issue-list">
                     ${mag.issues.map((issue, index) => `
                         <div class="issue-item" onclick="openDetail('${magKey}', ${index})">
-                            <div class="issue-cover">
-                                <canvas id="cover-${magKey}-${index}"></canvas>
-                            </div>
                             <div class="issue-info">
                                 <div class="issue-name">${mag.name}</div>
                                 <div class="issue-meta">${issue.dateCN}</div>
@@ -752,14 +749,9 @@
             
             document.getElementById('main-content').innerHTML = html;
             
-            // 异步加载封面
+            // 只加载顶部最新一期封面
             setTimeout(() => {
                 extractCover(links.pdf, heroCanvasId);
-                
-                mag.issues.forEach((issue, index) => {
-                    const issueLinks = getDownloadLinks(magKey, issue);
-                    extractCover(issueLinks.pdf, `cover-${magKey}-${index}`);
-                });
             }, 100);
         }
         
