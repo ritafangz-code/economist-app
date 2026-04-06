@@ -646,9 +646,22 @@
             const mag = magazines[magKey];
             const baseUrl = 'https://raw.githubusercontent.com/hehonghui/awesome-english-ebooks/master';
             const folder = `${mag.folder}/${issue.folder}`;
-            // 使用 fileDate 如果存在，否则使用 date
-            const fileDate = issue.fileDate || issue.date;
-            const fileName = `${mag.filePrefix}.${fileDate}`;
+            
+            // 不同期刊有不同的文件命名格式
+            let fileName;
+            if (magKey === 'nyorker') {
+                // new_yorker.2026.04.06.pdf
+                fileName = `new_yorker.${issue.date}`;
+            } else if (magKey === 'atlantic') {
+                // Atlantic_2026.04.02.pdf
+                fileName = `Atlantic_${issue.folder}`;
+            } else if (magKey === 'wired') {
+                // wired_2026.04.02.pdf
+                fileName = `wired_${issue.folder}`;
+            } else {
+                // TheEconomist.2026.04.04.pdf
+                fileName = `${mag.filePrefix}.${issue.date}`;
+            }
             
             return {
                 pdf: `${baseUrl}/${folder}/${fileName}.pdf`,
